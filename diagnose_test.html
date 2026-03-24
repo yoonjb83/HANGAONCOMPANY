@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>한가온컴퍼니 입체 진단 시스템 (v2.3.0)</title>
+    <title>한가온컴퍼니 정량 진단 시스템 (v2.3.5)</title>
     <!-- [비주얼 리소스] -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link
@@ -74,7 +74,7 @@
             padding: 15px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 200px;
+            padding-bottom: 140px;
         }
 
         .page {
@@ -117,13 +117,13 @@
 
         /* 입력 UI */
         .f-box {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .f-label {
             display: block;
             font-size: 0.85rem;
-            font-weight: 900;
+            font-weight: 950;
             color: var(--primary);
             margin-bottom: 6px;
             padding-left: 5px;
@@ -144,7 +144,7 @@
 
         .f-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(0, 209, 121, 0.08);
+            box-shadow: 0 10px 20px rgba(0, 209, 121, 0.1);
         }
 
         .domain-row {
@@ -175,6 +175,7 @@
             border: 4px solid #F1F5F9;
             cursor: pointer;
             transition: 0.25s;
+            margin-top: 10px;
         }
 
         .f-check.checked {
@@ -183,7 +184,7 @@
         }
 
         .f-check i {
-            font-size: 2.2rem;
+            font-size: 2.22rem;
         }
 
         /* 카드 UI */
@@ -196,24 +197,25 @@
 
         .card {
             background: #FFF;
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 22px;
+            padding: 25px 20px;
             border: 4px solid transparent;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            transition: 0.2s;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 15px;
-            min-height: 80px;
+            gap: 18px;
+            min-height: 90px;
         }
 
         .card.selected {
             border-color: var(--primary);
-            background: rgba(0, 209, 121, 0.04);
+            background: rgba(0, 209, 121, 0.05);
         }
 
         .card-txt h3 {
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 950;
         }
 
@@ -231,7 +233,7 @@
         }
 
         .btn-base {
-            height: 82px;
+            height: 80px;
             border-radius: 25px;
             border: none;
             font-size: 1.4rem;
@@ -264,21 +266,20 @@
         }
 
         #retryBtn {
-            background: #F1F5F9;
+            background: #E2E8F0;
             color: #64748B;
-            font-weight: 950;
             margin-top: 30px;
-            border: 1px solid #E2E8F0;
+            width: 100%;
         }
 
-        /* 결과 화면 */
+        /* 리포트 결과 */
         .res-container {
             background: white;
             border-radius: 40px;
             padding: 50px 20px;
             text-align: center;
             border: 1px solid #F1F5F9;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
         }
 
         .res-badge {
@@ -319,7 +320,7 @@
         <header>HANGAON COMPANY</header>
 
         <div class="content">
-            <!-- 1. 정보 입력 -->
+            <!-- 1. 계정 정보 (진단시작하기 고정) -->
             <div id="stepInfo" class="page active">
                 <h2>반가워요 원장님!<br>입체 진단을 시작합니다.</h2>
                 <p class="desc">정밀한 분석을 위해 기초 정보를 입력해주세요.</p>
@@ -347,51 +348,53 @@
                 <h2>경영 상태에 따라<br>분기가 시작됩니다.</h2>
                 <div class="card-list">
                     <div class="card" onclick="selectRoute('routeA')"><i class="fas fa-rocket"
-                            style="color:var(--primary); font-size:1.8rem;"></i>
+                            style="color:var(--primary); font-size:2rem;"></i>
                         <div class="card-txt">
                             <h3>신규 개원 예정자</h3>
                         </div>
                     </div>
                     <div class="card" onclick="selectRoute('routeB')"><i class="fas fa-chart-line"
-                            style="color:var(--primary); font-size:1.8rem;"></i>
+                            style="color:var(--primary); font-size:2rem;"></i>
                         <div class="card-txt">
-                            <h3>기개원 운영 원장님</h3>
+                            <h3>개원 운영 원장님</h3>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. 상세 수치 (Route B 전 전용) -->
+            <!-- 3. 수치 입력 (Route B) -->
             <div id="stepStats" class="page">
-                <h2>월 평균 매출 현황을<br>선택해 주세요.</h2>
-                <p class="desc">현재 매출 구간에 따른 병목 구간을 진단합니다.</p>
+                <h2>월 평균 매출 수치를<br>선택해 주세요.</h2>
+                <p class="desc">현재 매출 구간을 선택하시면 정밀한 병목 진단이 가능합니다.</p>
                 <div id="salesArea" class="card-list"></div>
-                <div class="f-box" style="margin-top:20px;"><span class="f-label">일 평균 내원객 수 (명)</span><input
+                <div class="f-box" style="margin-top:25px;"><span class="f-label">일 평균 내원객 수 (명)</span><input
                         type="number" id="inPatients" class="f-input" placeholder="예: 40" oninput="uiUpdate()"
                         inputmode="numeric"></div>
+                <div class="f-box"><span class="f-label">희망 매출 목표 (만원)</span><input type="number" id="inTarget"
+                        class="f-input" placeholder="예: 8000" oninput="uiUpdate()" inputmode="numeric"></div>
             </div>
 
-            <!-- 4. 정밀 문항 -->
+            <!-- 4. 정밀 문항 (완전 복구) -->
             <div id="stepQuestion" class="page">
                 <div id="qLabel"
                     style="background:var(--primary); color:#FFF; padding:6px 15px; border-radius:10px; display:inline-block; font-weight:950; font-size:0.85rem; margin-bottom:15px;">
-                    영역</div>
+                    진행</div>
                 <h2 id="txtQ">질문 제목</h2>
                 <div id="optArea" class="card-list"></div>
             </div>
 
-            <!-- 5. 진단 결과 -->
+            <!-- 5. 고도화 결과 -->
             <div id="stepResult" class="page">
-                <div id="resBox" class="res-container">준비 중...</div>
-                <button id="retryBtn" class="btn-base" onclick="location.reload()">처음부터 다시 하기</button>
+                <div id="resBox" class="res-container"></div>
+                <button id="retryBtn" class="btn-base" onclick="location.reload()">다시하기</button>
             </div>
         </div>
 
         <div class="footer">
             <button id="backBtn" class="btn-base" onclick="goBack()">이전</button>
-            <button id="ctaBtn" class="btn-base" onclick="handleNext()">시작하기</button>
+            <button id="ctaBtn" class="btn-base" onclick="handleNext()">진단시작하기</button>
         </div>
-        <div class="v-stamp">FINAL BUILD v2.3.0</div>
+        <div class="v-stamp">MASTER BUILD v2.3.5</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -399,15 +402,24 @@
         const state = {
             page: 'stepInfo', route: null, step: 0, data: {}, user: { name: '', phone: '', email: '', sales: '', patients: '' },
             salesRanges: ['1000만원 이하', '1000만~3000만', '3000만~5000만', '5000만~7000만', '7000만~1억', '1억~1.5억', '1.5억~2억', '2억~3억', '3억~5억', '5억 이상'],
-            qA: [
-                { c: '규모/기반', q: '지향하시는 병원 규모는?', o: ['적정 규모 실속형', '시스템 기반 중대형'], k: 'A1' },
-                { c: '운영/전략', q: '진료 수익의 주된 비중은?', o: ['보험 진료 위주', '비급여(미용/특화) 중심'], k: 'A7' },
-                { c: '비전/성장', q: '본원 이후 지점 확장 계획은?', o: ['단독 의원 집중', 'MSO/네트워크화'], k: 'A9' }
+            qA: [ // Route A: 9 Items
+                { c: '규모/시설', q: '지향하시는 병원 규모는 어떠신가요?', o: ['실속형(1인 위주)', '정예화된 중형', '시스템 기반 대형'], k: 'A1' },
+                { c: '규모/시설', q: '입원실/수술실 운영 계획이 있으십니까?', o: ['외래 중심(30평 내외)', '특화 수술(50평 이상)', '입원 포함(100평 이상)'], k: 'A2' },
+                { c: '규모/시설', q: '초기 자본 투입 성향은?', o: ['자기 자본 위주 절약형', '공격적 대출 선점형'], k: 'A3' },
+                { c: '입지/환경', q: '고려하시는 상권의 형태는?', o: ['안정적 거주 밀집지', '유동인구 많은 역세권 도심'], k: 'A4' },
+                { c: '입지/환경', q: '주로 타겟팅하는 환자층은?', o: ['가족/노년(패밀리)', '사회초년생/직장인(MZ)', '특정 질환 전문 타겟'], k: 'A5' },
+                { c: '입지/환경', q: '가장 비중을 둘 마케팅 보조 채널은?', o: ['검색/플레이스', '블로그/SNS', '지역 맘카페/커뮤니티'], k: 'A6' },
+                { c: '모델/전략', q: '수익 모델의 핵심 비중은?', o: ['보험 진료 위주', '비급여 클리닉 중심'], k: 'A7' },
+                { c: '모델/전략', q: '원장님의 진료 스타일 유형은?', o: ['섬세한 상담/술기 중심', '최신 장비/기술 중심'], k: 'A8' },
+                { c: '모델/전략', q: '브랜드 운영 방식의 지향점은?', o: ['원장 퍼스널 브랜드', '네트워크/MSO 중심'], k: 'A9' }
             ],
-            qB: [
-                { c: 'CS/상담', q: '상담 동의율이 안정적입니까?', k: 'B2' },
-                { c: '마케팅', q: '광고 매체별 유입 분석이 됩니까?', k: 'B4' },
-                { c: 'HR/관리', q: '명확한 인사/보상 체계가 있습니까?', k: 'B9' }
+            qB: [ // Route B: 18 Items
+                { c: 'CS', q: '전 직원 표준 응대 매뉴얼이 있나요?', k: 'B1' }, { c: 'CS', q: '내부 상담 결정율이 안정적인가요?', k: 'B2' }, { c: 'CS', q: '전화/온라인 응대 품질이 우수한가요?', k: 'B3' },
+                { c: '마케팅', q: '광고 매체별 유입 분석을 시행 중입니까?', k: 'B4' }, { c: '마케팅', q: '지역 검색 노출 순위가 1페이지 내 고정인가요?', k: 'B5' }, { c: '마케팅', q: '매출 대비 마케팅비 비중이 적절한가요?', k: 'B6' },
+                { c: 'HR', q: '직원 이직률이 낮은 편입니까?', k: 'B7' }, { c: 'HR', q: '내부 교육 프로토콜이 매월 실행되나요?', k: 'B8' }, { c: 'HR', q: '성과 보상 및 인센티브 체계가 있나요?', k: 'B9' },
+                { c: '진료수익', q: '환자당 평균 객단가가 목표치에 달성 중인가요?', k: 'B10' }, { c: '진료수익', q: '건보 청구 누락 방지 시스템이 있습니까?', k: 'B11' }, { c: '진료수익', q: '고객 대기 시간 관리가 양호한가요?', k: 'B12' },
+                { c: 'CRM', q: '재진 예약 및 부도율 관리가 됩니까?', k: 'B13' }, { c: 'CRM', q: '방문 후 해피콜 등 팔로업이 시행되나요?', k: 'B14' }, { c: 'CRM', q: 'VIP 고객에 대한 특별 관리가 있습니까?', k: 'B15' },
+                { c: '비전', q: '병원의 3년 내 비전 로드맵이 명확한가요?', k: 'B16' }, { c: '비전', q: '시스템 경영 및 지점 확장을 고려하시나요?', k: 'B17' }, { c: '비전', q: '원가 분석 및 재무 관리가 고도화되어 있나요?', k: 'B18' }
             ]
         };
 
@@ -434,26 +446,21 @@
             const a = document.getElementById('agree1').checked;
 
             let ready = false;
-            let ctaText = '다음';
-
-            if (state.page === 'stepInfo') { ready = (n.length >= 2 && p.length >= 12 && e.includes('.') && a); ctaText = '시작하기'; }
-            else if (state.page === 'stepStats') { ready = (state.user.sales !== '' && document.getElementById('inPatients').value > 0); ctaText = '진단 시작하기'; }
-            else if (state.page === 'stepResult') { ready = true; ctaText = '종료 및 상담 예약'; }
-            else { ready = true; ctaText = '다음'; }
+            if (state.page === 'stepInfo') { ready = (n.length >= 2 && p.length >= 12 && e.includes('.') && a); cbt.innerText = '진단시작하기'; }
+            else if (state.page === 'stepStats') { ready = (state.user.sales !== '' && document.getElementById('inPatients').value > 0); cbt.innerText = '다음'; }
+            else { ready = true; cbt.innerText = (state.page === 'stepResult') ? '상담 신청하기' : '다음'; }
 
             if (ready) cbt.classList.add('ready'); else cbt.classList.remove('ready');
-            cbt.innerText = ctaText;
             bbt.style.display = (state.page === 'stepInfo') ? 'none' : 'flex';
-            document.getElementById('progressBar').style.width = (state.page === 'stepResult' ? 100 : 20) + '%';
+            document.getElementById('progressBar').style.width = (state.page === 'stepResult' ? 100 : (state.page === 'stepInfo' ? 10 : 30)) + '%';
         }
 
         function selectRoute(r) { state.route = r; handleNext(); }
-
         function handleNext() {
             if (!cbt.classList.contains('ready')) return;
             if (state.page === 'stepInfo') { state.page = 'stepBranch'; render(); }
             else if (state.page === 'stepBranch') { if (state.route === 'routeB') { state.page = 'stepStats'; renderSales(); } else state.page = 'stepQuestion'; render(); }
-            else if (state.page === 'stepStats') { state.user.patients = document.getElementById('inPatients').value; state.page = 'stepQuestion'; render(); }
+            else if (state.page === 'stepStats') { state.page = 'stepQuestion'; render(); }
             else if (state.page === 'stepQuestion') {
                 const list = state.route === 'routeA' ? state.qA : state.qB;
                 if (state.step < list.length - 1) { state.step++; render(); }
@@ -464,7 +471,7 @@
         function renderSales() {
             const sa = document.getElementById('salesArea'); sa.innerHTML = '';
             state.salesRanges.forEach(r => {
-                const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<h3>${r}</h3>`;
+                const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<div class="card-txt"><h3>${r}</h3></div>`;
                 if (state.user.sales === r) d.classList.add('selected');
                 d.onclick = () => { state.user.sales = r; renderSales(); uiUpdate(); };
                 sa.appendChild(d);
@@ -483,9 +490,9 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(state.page).classList.add('active');
             if (state.page === 'stepQuestion') {
-                const list = state.route === 'routeA' ? state.qA : state.qB;
+                const list = (state.route === 'routeA' ? state.qA : state.qB);
                 const cq = list[state.step];
-                document.getElementById('qLabel').innerText = cq.c;
+                document.getElementById('qLabel').innerText = `${cq.c} (${state.step + 1}/${list.length})`;
                 document.getElementById('txtQ').innerText = cq.q;
                 const oA = document.getElementById('optArea'); oA.innerHTML = '';
                 if (state.route === 'routeA') {
@@ -494,15 +501,27 @@
                         d.onclick = () => { state.data[cq.k] = i; handleNext(); }; oA.appendChild(d);
                     });
                 } else {
-                    [{ v: 5, t: '우수' }, { v: 3, t: '관찰필요' }, { v: 1, t: '미흡/개선' }].forEach(s => {
+                    [{ v: 5, t: '매우 상/우수' }, { v: 3, t: '보통/관찰' }, { v: 1, t: '미흡/개선' }].forEach(s => {
                         const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<h3>${s.t}</h3>`;
                         d.onclick = () => { state.data[cq.k] = s.v; handleNext(); }; oA.appendChild(d);
                     });
                 }
-            } else if (state.page === 'stepResult') {
-                document.getElementById('resBox').innerHTML = `<span class="res-badge">진단완료</span><h2>분석 리포트가 생성되었습니다.</h2><img src="hospital_persona_medical_center_1773995174948.png" class="res-img"><p class="desc">한가온컴퍼니 전문가가 분석 결과를 토대로 보완 전략을 곧 제안해 드리겠습니다.</p>`;
+            } else if (state.page === 'stepResult') { renderFinal(); }
+            uiUpdate(); document.querySelector('.content').scrollTop = 0;
+        }
+
+        function renderFinal() {
+            const bx = document.getElementById('resBox');
+            if (state.route === 'routeA') {
+                const score = Object.values(state.data).reduce((a, b) => a + b, 0);
+                let p = { t: '시스템 메디컬 센터형', i: 'hospital_persona_medical_center_1773995174948.png', d: '안정적 인프라와 표준화된 시스템이 성공의 핵심입니다.' };
+                if (score <= 5) p = { t: '지역 밀착 동네 명의형', i: 'hospital_persona_neighborhood_healer_1773995146325.png', d: '환자와의 깊은 유대감을 통한 고정 고객 확보가 정답입니다.' };
+                bx.innerHTML = `<span class="res-badge">개원 페르소나 매칭</span><h2>원장님은 [${p.t}] 입니다.</h2><img src="${p.i}" class="res-img"><p class="desc">${p.d}</p>`;
+            } else {
+                bx.innerHTML = `<span class="res-badge">경영 정밀 진단</span><h2>정밀 분석 리포트 생성 완료</h2><canvas id="radarChart"></canvas><p class="desc">6대 영역 분석 결과, 원장님께 가장 필요한 병목 해결 솔루션을 제안해 드립니다.</p>`;
+                const domains = { CS: (state.data.B1 + state.data.B2 + state.data.B3) / 3 || 0, 마케팅: (state.data.B4 + state.data.B5 + state.data.B6) / 3 || 0, HR: (state.data.B7 + state.data.B8 + state.data.B9) / 3 || 0, 진료수익: (state.data.B10 + state.data.B11 + state.data.B12) / 3 || 0, CRM: (state.data.B13 + state.data.B14 + state.data.B15) / 3 || 0, 비전: (state.data.B16 + state.data.B17 + state.data.B18) / 3 || 0 };
+                setTimeout(() => { new Chart(document.getElementById('radarChart'), { type: 'radar', data: { labels: Object.keys(domains), datasets: [{ label: '진단 점수', data: Object.values(domains), backgroundColor: 'rgba(0,209,121,0.2)', borderColor: '#00D179', borderWidth: 3 }] }, options: { scales: { r: { max: 5, min: 0 } } } }); }, 100);
             }
-            uiUpdate(); if (document.querySelector('.content')) document.querySelector('.content').scrollTop = 0;
         }
 
         async function saveLead() {
