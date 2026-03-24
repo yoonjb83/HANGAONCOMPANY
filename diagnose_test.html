@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>한가온컴퍼니 정밀 진단 시스템 (v2.1.8)</title>
+    <title>한가온컴퍼니 정밀 진단 시스템 (v2.2.0)</title>
     <!-- [비주얼 리소스] -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link
@@ -35,12 +35,13 @@
             background: var(--bg);
             color: var(--text);
             font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+            overflow: hidden;
         }
 
         #app {
             display: flex;
             flex-direction: column;
-            min-height: 100%;
+            height: 100%;
             max-width: 600px;
             margin: 0 auto;
             background: var(--bg);
@@ -51,7 +52,7 @@
         .p-bar {
             width: 100%;
             height: 6px;
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 0, 0, 0.04);
         }
 
         #progressBar {
@@ -69,10 +70,10 @@
             font-size: 1.1rem;
         }
 
-        /* 콘텐츠 영역 (키보드 대응형 스크롤) */
+        /* 콘텐츠 영역 (스크롤 활성화) */
         .content {
             flex: 1;
-            padding: 20px 15px 140px;
+            padding: 15px 15px 150px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
@@ -104,62 +105,29 @@
             font-weight: 950;
             line-height: 1.25;
             margin-bottom: 20px;
-            letter-spacing: -1px;
+            letter-spacing: -1.2px;
         }
 
         .desc {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: var(--gray);
             font-weight: 600;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             line-height: 1.6;
         }
 
-        /* 카드 UI */
-        .card-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .card {
-            background: #FFF;
-            border-radius: var(--radius);
-            padding: 22px 20px;
-            border: 4px solid transparent;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
-            transition: 0.2s;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .card.selected {
-            border-color: var(--primary);
-            background: rgba(0, 209, 121, 0.04);
-        }
-
-        .card i {
-            font-size: 2rem;
-            color: var(--primary);
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .card-txt h3 {
-            font-size: 1.4rem;
-            font-weight: 950;
-        }
-
-        /* 입력 폼 (개선됨) */
+        /* 입력 폼 UI */
         .f-box {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+        }
+
+        .f-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 6px;
+            padding-left: 5px;
         }
 
         .f-input {
@@ -169,7 +137,7 @@
             border-radius: 20px;
             padding: 0 20px;
             font-size: 1.3rem;
-            font-weight: 900;
+            font-weight: 950;
             outline: none;
             background: white;
             transition: 0.2s;
@@ -177,20 +145,54 @@
 
         .f-input:focus {
             border-color: var(--primary);
-            background: #FFF;
             box-shadow: 0 5px 15px rgba(0, 209, 121, 0.1);
         }
 
+        /* 도메인 픽커 */
+        .domain-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+
+        .domain-btn {
+            padding: 8px 15px;
+            border-radius: 12px;
+            border: 2px solid #F1F5F9;
+            background: white;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--gray);
+            cursor: pointer;
+        }
+
+        .domain-btn:active {
+            background: #F1F5F9;
+        }
+
+        /* 체크박스 UI (강조 및 버그수정) */
         .f-check {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 20px;
+            gap: 15px;
+            padding: 22px;
             background: #FFF;
-            border-radius: 20px;
+            border-radius: 22px;
             border: 4px solid #F1F5F9;
             cursor: pointer;
             margin-top: 10px;
+            transition: 0.25s;
+        }
+
+        .f-check.checked {
+            border-color: var(--primary);
+            background: rgba(0, 209, 121, 0.04);
+        }
+
+        .f-check i {
+            font-size: 2.22rem;
         }
 
         /* 하단 내비게이션 */
@@ -207,10 +209,10 @@
         }
 
         .btn-base {
-            height: 78px;
-            border-radius: var(--radius);
+            height: 80px;
+            border-radius: 25px;
             border: none;
-            font-size: 1.35rem;
+            font-size: 1.4rem;
             font-weight: 950;
             display: flex;
             align-items: center;
@@ -228,7 +230,7 @@
         #ctaBtn.ready {
             background: var(--primary);
             color: #FFF;
-            box-shadow: 0 12px 30px rgba(0, 209, 121, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 209, 121, 0.3);
             cursor: pointer;
         }
 
@@ -240,32 +242,57 @@
             display: none;
         }
 
-        /* 결과 화면 */
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card {
+            background: #FFF;
+            border-radius: var(--radius);
+            padding: 25px 20px;
+            border: 4px solid transparent;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+            transition: 0.2s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card.selected {
+            border-color: var(--primary);
+            background: rgba(0, 209, 121, 0.05);
+        }
+
+        .card i {
+            font-size: 2.2rem;
+            color: var(--primary);
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .res-container {
             background: #FFF;
-            border-radius: 35px;
-            padding: 45px 20px;
+            border-radius: 40px;
+            padding: 50px 20px;
             text-align: center;
-            border: 1px solid #F1F5F9;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
         }
 
         .res-badge {
             display: inline-block;
-            padding: 8px 18px;
+            padding: 8px 20px;
             background: rgba(0, 209, 121, 0.1);
             color: var(--primary);
             border-radius: 10px;
             font-weight: 950;
             margin-bottom: 25px;
-            font-size: 0.9rem;
-        }
-
-        .res-img {
-            width: 100%;
-            border-radius: 30px;
-            margin: 20px 0;
-            border: 6px solid #F8FAFC;
         }
 
         .v-stamp {
@@ -274,7 +301,7 @@
             width: 100%;
             text-align: center;
             font-size: 0.75rem;
-            color: #DDD;
+            color: #EEE;
             font-weight: 900;
             pointer-events: none;
         }
@@ -289,30 +316,37 @@
         <header>HANGAON COMPANY</header>
 
         <div class="content">
-            <!-- 1. 정보 입력 (스마트 자동 포커스 적용) -->
+            <!-- STEP 1: 최적화된 입력창 -->
             <div id="stepInfo" class="page active">
                 <h2>반가워요 원장님!<br>입체 진단을 시작합니다.</h2>
-                <p class="desc">기초 정보를 입력해 주세요. (Enter로 다음 칸 이동)</p>
-                <div class="f-box"><input type="text" id="inName" class="f-input" placeholder="성함" oninput="uiUpdate()"
-                        onkeydown="handleEnter(event, 'inPhone')"></div>
-                <div class="f-box"><input type="tel" id="inPhone" class="f-input" value="010-"
-                        oninput="formatPhone(this)" onkeydown="handleEnter(event, 'inEmail')"></div>
-                <div class="f-box"><input type="email" id="inEmail" class="f-input" placeholder="이메일 주소"
-                        oninput="uiUpdate()" onkeydown="handleEnter(event, 'agreeBox')"></div>
+                <p class="desc">정밀한 분석을 위해 기초 정보를 입력해주세요.</p>
+                <div class="f-box"><span class="f-label">성함</span><input type="text" id="inName" class="f-input"
+                        placeholder="원장님 성함" oninput="uiUpdate()" onkeydown="handleEnter(event, 'inPhone')"></div>
+                <div class="f-box"><span class="f-label">연락처</span><input type="tel" id="inPhone" class="f-input"
+                        value="010-" oninput="formatPhone(this)" onkeydown="handleEnter(event, 'inEmail')"></div>
+                <div class="f-box"><span class="f-label">이메일</span><input type="email" id="inEmail" class="f-input"
+                        placeholder="example@email.com" oninput="uiUpdate()" onkeydown="handleEnter(event, 'agreeBox')">
+                </div>
+                <div class="domain-row">
+                    <button class="domain-btn" onclick="setDomain('@naver.com')">@naver.com</button>
+                    <button class="domain-btn" onclick="setDomain('@gmail.com')">@gmail.com</button>
+                    <button class="domain-btn" onclick="setDomain('@hanmail.net')">@hanmail.net</button>
+                    <button class="domain-btn" onclick="setDomain('')">직접 입력</button>
+                </div>
                 <div class="f-check" id="agreeBox" onclick="toggleAgree()">
-                    <i id="agreeIcon" class="fas fa-check-circle" style="color:#DDD; font-size:2rem;"></i>
-                    <span style="font-weight:950; font-size:1rem;">개인정보 수집 및 상담 동의 (필수)</span>
+                    <i id="agreeIcon" class="fas fa-check-circle" style="color:#DDD;"></i>
+                    <span style="font-weight:950; font-size:1.1rem; color:inherit;">개인정보 수집 및 상담 동의 (필수)</span>
                     <input type="checkbox" id="agree1" style="display:none">
                 </div>
             </div>
 
-            <!-- 2. 부문 선택 -->
+            <!-- STEP 2: 분기 -->
             <div id="stepBranch" class="page">
-                <h2>진단 부문을<br>말씀해주세요.</h2>
+                <h2>진단 부문을<br>선택해 주세요.</h2>
                 <div class="card-list">
                     <div class="card" onclick="selectRoute('routeA')"><i class="fas fa-rocket"></i>
                         <div class="card-txt">
-                            <h3>신규 개원 예정</h3>
+                            <h3>신규 개원 준비</h3>
                         </div>
                     </div>
                     <div class="card" onclick="selectRoute('routeB')"><i class="fas fa-chart-line"></i>
@@ -323,27 +357,13 @@
                 </div>
             </div>
 
-            <!-- 3. 수치 입력 (Route B) -->
-            <div id="stepStats" class="page">
-                <h2>현재 경영<br>수치를 입력해주세요.</h2>
-                <div class="f-box"><input type="number" id="inSales" class="f-input" placeholder="매출액 (만원)"
-                        oninput="uiUpdate()" inputmode="numeric"></div>
-                <div class="f-box"><input type="number" id="inPatients" class="f-input" placeholder="내원객수 (명)"
-                        oninput="uiUpdate()" inputmode="numeric"></div>
-            </div>
-
-            <!-- 4. 진단 문항 -->
             <div id="stepQuestion" class="page">
-                <div id="qLabel"
-                    style="background:var(--primary); color:#FFF; padding:5px 12px; border-radius:10px; display:inline-block; font-weight:950; font-size:0.85rem; margin-bottom:12px;">
-                    진행</div>
-                <h2 id="txtQ">질문 제목</h2>
+                <h2 id="txtQ">진단 문항</h2>
                 <div id="optArea" class="card-list"></div>
             </div>
 
-            <!-- 5. 결과 리포트 -->
             <div id="stepResult" class="page">
-                <div id="resBox" class="res-container">준비 중...</div>
+                <div id="resBox" class="res-container"></div>
             </div>
         </div>
 
@@ -351,94 +371,99 @@
             <button id="backBtn" class="btn-base" onclick="goBack()">이전</button>
             <button id="ctaBtn" class="btn-base" onclick="handleNext()">시작하기</button>
         </div>
-        <div class="v-stamp">SMART INPUT v2.1.8</div>
+        <div class="v-stamp">FINAL v2.2.0</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const state = {
-            page: 'stepInfo', route: null, step: 0, data: {}, user: { name: '', phone: '', email: '', sales: '', patients: '' },
-            qA: [
-                { c: '규모/시설', q: '지향하시는 병원 규모는?', o: ['실속형(1인)', '정예화된 중형', '시스템 대형'], k: 'A1' },
-                { c: '모델/전략', q: '진료 수익의 주된 원천은?', o: ['급여/보험 중심', '비급여/클리닉 중심'], k: 'A7' },
-                { c: '비전/네트워크', q: '지점 확장 계획이 있습니까?', o: ['단독 의원 고도화', 'MSO/네트워크 확장'], k: 'A9' }
-            ],
-            qB: [
-                { c: '마케팅', q: '광고 매체당 효율을 분석하나요?', k: 'B4' },
-                { c: 'HR/조직', q: '명확한 급여/인센티브 체계가 있습니까?', k: 'B9' },
-                { c: '운영/원가', q: '원가 분석을 정기적으로 시행합니까?', k: 'B18' }
-            ]
+            page: 'stepInfo', route: null, step: 0, data: {}, user: { name: '', phone: '', email: '' },
+            qA: [{ q: '목표 규모?', o: ['실속형', '대형'], k: 'A1' }, { q: '전략?', o: ['보험', '비급여'], k: 'A2' }]
         };
 
-        const cbt = document.getElementById('ctaBtn');
-        const bbt = document.getElementById('backBtn');
+        function handleEnter(e, nextId) { if (e.key === 'Enter') { e.preventDefault(); if (nextId === 'agreeBox') toggleAgree(); else document.getElementById(nextId).focus(); } }
 
-        function handleEnter(e, targetId) { if (e.key === 'Enter') { e.preventDefault(); const t = document.getElementById(targetId); if (t) t.focus(); else if (targetId === 'agreeBox') toggleAgree(); } }
-        function formatPhone(el) { let v = el.value.replace(/[^0-9]/g, ''); if (v.length > 3 && v.length <= 7) el.value = v.substring(0, 3) + '-' + v.substring(3); else if (v.length > 7) el.value = v.substring(0, 3) + '-' + v.substring(3, 7) + '-' + v.substring(7, 11); else el.value = v; uiUpdate(); }
-        function toggleAgree() { const chk = document.getElementById('agree1'); chk.checked = !chk.checked; document.getElementById('agreeIcon').style.color = chk.checked ? "#00D179" : "#DDD"; uiUpdate(); if (chk.checked && cbt.classList.contains('ready')) handleNext(); }
+        function formatPhone(el) {
+            let v = el.value.replace(/[^0-9]/g, '');
+            if (!v.startsWith('010')) v = '010' + v;
+            if (v.length > 3 && v.length <= 7) el.value = v.substring(0, 3) + '-' + v.substring(3);
+            else if (v.length > 7) el.value = v.substring(0, 3) + '-' + v.substring(3, 7) + '-' + v.substring(7, 11);
+            else el.value = v;
+            uiUpdate();
+        }
+
+        function setDomain(d) {
+            const el = document.getElementById('inEmail');
+            let base = el.value.split('@')[0];
+            el.value = base + d;
+            el.focus(); uiUpdate();
+        }
+
+        function toggleAgree() {
+            const chk = document.getElementById('agree1');
+            const box = document.getElementById('agreeBox');
+            const icon = document.getElementById('agreeIcon');
+            chk.checked = !chk.checked;
+            if (chk.checked) {
+                box.classList.add('checked');
+                icon.style.color = "#00D179";
+            } else {
+                box.classList.remove('checked');
+                icon.style.color = "#DDD";
+            }
+            uiUpdate();
+            // 동의 시 데이터가 다 차 있으면 바로 시작하기 기능 (선택사항)
+            if (chk.checked && document.getElementById('ctaBtn').classList.contains('ready')) handleNext();
+        }
 
         function uiUpdate() {
+            const n = document.getElementById('inName').value.trim();
+            const p = document.getElementById('inPhone').value.trim();
+            const e = document.getElementById('inEmail').value.trim();
+            const a = document.getElementById('agree1').checked;
+
             let ready = false;
-            const name = document.getElementById('inName').value.trim();
-            const phone = document.getElementById('inPhone').value.trim();
-            const email = document.getElementById('inEmail').value.trim();
-            const agree = document.getElementById('agree1').checked;
+            if (state.page === 'stepInfo') ready = (n.length >= 2 && p.length >= 12 && e.includes('.') && a);
+            else ready = true;
 
-            if (state.page === 'stepInfo') { ready = (name.length >= 2 && phone.length >= 12 && email.includes('@') && agree); }
-            else if (state.page === 'stepStats') { ready = (document.getElementById('inSales').value > 0); }
-            else { ready = true; }
+            const cta = document.getElementById('ctaBtn');
+            if (ready) cta.classList.add('ready'); else cta.classList.remove('ready');
 
-            if (ready) cbt.classList.add('ready'); else cbt.classList.remove('ready');
-            let pct = (state.page === 'stepResult') ? 100 : (state.page === 'stepInfo' ? 10 : (state.page === 'stepBranch' ? 20 : (state.step * 25 + 30)));
-            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('backBtn').style.display = (state.page === 'stepInfo') ? 'none' : 'flex';
+            document.getElementById('progressBar').style.width = (state.page === 'stepResult' ? 100 : 15) + '%';
         }
 
         function selectRoute(r) { state.route = r; handleNext(); }
         function handleNext() {
-            if (!cbt.classList.contains('ready')) return;
-            if (state.page === 'stepInfo') { state.user.email = document.getElementById('inEmail').value; state.page = 'stepBranch'; render(); }
-            else if (state.page === 'stepBranch') { if (state.route === 'routeB') state.page = 'stepStats'; else state.page = 'stepQuestion'; render(); }
-            else if (state.page === 'stepStats') { state.page = 'stepQuestion'; render(); }
+            if (!document.getElementById('ctaBtn').classList.contains('ready')) return;
+            if (state.page === 'stepInfo') { state.page = 'stepBranch'; render(); }
+            else if (state.page === 'stepBranch') { state.page = 'stepQuestion'; render(); }
             else if (state.page === 'stepQuestion') {
-                const list = state.route === 'routeA' ? state.qA : state.qB;
-                if (state.step < list.length - 1) { state.step++; render(); }
+                if (state.step < state.qA.length - 1) { state.step++; render(); }
                 else { state.page = 'stepResult'; render(); saveLead(); }
             }
         }
-        function goBack() {
-            if (state.page === 'stepQuestion') { if (state.step > 0) state.step--; else state.page = (state.route === 'routeB') ? 'stepStats' : 'stepBranch'; }
-            else if (state.page === 'stepStats') { state.page = 'stepBranch'; }
-            else if (state.page === 'stepBranch') { state.page = 'stepInfo'; }
-            render();
-        }
+        function goBack() { if (state.page === 'stepQuestion' && state.step > 0) state.step--; else if (state.page !== 'stepInfo') state.page = 'stepInfo'; render(); }
 
         function render() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(state.page).classList.add('active');
             if (state.page === 'stepQuestion') {
-                const cq = (state.route === 'routeA' ? state.qA : state.qB)[state.step];
-                document.getElementById('qLabel').innerText = cq.c;
+                const cq = state.qA[state.step];
                 document.getElementById('txtQ').innerText = cq.q;
                 const oA = document.getElementById('optArea'); oA.innerHTML = '';
-                if (state.route === 'routeA') { cq.o.forEach((o, i) => { const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<div class="card-txt"><h3>${o}</h3></div>`; d.onclick = () => { state.data[cq.k] = i; handleNext(); }; oA.appendChild(d); }); }
-                else {
-                    [5, 3, 1].forEach(v => { const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<i class="fas fa-check"></i><div class="card-txt"><h3>${v === 5 ? '매우 상' : '보통': '미흡' }</h3 ></div > `; d.onclick=()=>{ state.data[cq.k]=v; handleNext(); }; oA.appendChild(d); }); }
-            } else if(state.page==='stepResult') { renderFinal(); }
+                cq.o.forEach((o, i) => {
+                    const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<h3>${o}</h3>`;
+                    d.onclick = () => { state.data[cq.k] = i; handleNext(); }; oA.appendChild(d);
+                });
+            } else if (state.page === 'stepResult') {
+                document.getElementById('resBox').innerHTML = `<span class="res-badge">진단완료</span><h2>분석이 완료되었습니다.</h2><p class="desc">한가온컴퍼니 전문가가 곧 연락드리겠습니다.</p>`;
+            }
             uiUpdate(); document.querySelector('.content').scrollTop = 0;
         }
 
-        function renderFinal() {
-            const bx = document.getElementById('resBox');
-            bx.innerHTML = `
-                        < span class= "res-badge" > 진단 리포트 생성완료</span >
-                <h2>${document.getElementById('inName').value} 원장님,<br>분석 결과입니다.</h2>
-                <img src="hospital_persona_medical_center_1773995174948.png" class="res-img">
-                <p class="desc">정밀 리포트가 전송되었습니다. 한가온컴퍼니 전문가와 상담을 원하시면 아래 버튼을 눌러주세요.</p>
-            `;
-        }
-
         async function saveLead() {
-            const payload = { data: [{ time: new Date().toLocaleString(), name: document.getElementById('inName').value, phone: document.getElementById('inPhone').value, email: state.user.email, route: state.route, answers: JSON.stringify(state.data) }] };
+            const payload = { data: [{ time: new Date().toLocaleString(), name: document.getElementById('inName').value, phone: document.getElementById('inPhone').value, email: document.getElementById('inEmail').value, route: state.route, answers: JSON.stringify(state.data) }] };
             fetch('https://sheetdb.io/api/v1/3reeb3ra3fklt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         }
         uiUpdate();
