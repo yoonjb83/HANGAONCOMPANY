@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>한가온컴퍼니 정량 진단 시스템 (v2.3.5)</title>
-    <!-- [비주얼 리소스] -->
+    <title>한가온컴퍼니 정밀 진단 리포트 (v2.4.0)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Noto+Sans+KR:wght@700;900&display=swap"
@@ -17,7 +16,6 @@
             --bg: #FAFBFC;
             --text: #1E293B;
             --gray: #64748B;
-            --radius: 25px;
         }
 
         * {
@@ -68,13 +66,12 @@
             font-size: 1.1rem;
         }
 
-        /* 콘텐츠 영역 */
         .content {
             flex: 1;
             padding: 15px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 140px;
+            padding-bottom: 200px;
         }
 
         .page {
@@ -115,7 +112,6 @@
             line-height: 1.6;
         }
 
-        /* 입력 UI */
         .f-box {
             margin-bottom: 15px;
         }
@@ -144,25 +140,7 @@
 
         .f-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(0, 209, 121, 0.1);
-        }
-
-        .domain-row {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin: 10px 0 30px;
-        }
-
-        .domain-btn {
-            padding: 10px 15px;
-            border-radius: 12px;
-            border: 2px solid #F1F5F9;
-            background: white;
-            font-size: 0.9rem;
-            font-weight: 900;
-            color: var(--gray);
-            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 209, 121, 0.08);
         }
 
         .f-check {
@@ -183,11 +161,6 @@
             background: rgba(0, 209, 121, 0.04);
         }
 
-        .f-check i {
-            font-size: 2.22rem;
-        }
-
-        /* 카드 UI */
         .card-list {
             display: flex;
             flex-direction: column;
@@ -200,8 +173,7 @@
             border-radius: 22px;
             padding: 25px 20px;
             border: 4px solid transparent;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-            transition: 0.2s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -214,12 +186,47 @@
             background: rgba(0, 209, 121, 0.05);
         }
 
-        .card-txt h3 {
-            font-size: 1.35rem;
-            font-weight: 950;
+        .res-section {
+            background: white;
+            border-radius: 35px;
+            padding: 35px 20px;
+            margin-bottom: 20px;
+            border: 1px solid #F1F5F9;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+            text-align: left;
         }
 
-        /* 하단 내비게이션 */
+        .res-h3 {
+            font-size: 1.3rem;
+            font-weight: 950;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tip-box {
+            background: #F8FAFC;
+            border-radius: 20px;
+            padding: 22px;
+            margin-top: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .tip-box h4 {
+            font-size: 1rem;
+            font-weight: 950;
+            margin-bottom: 6px;
+        }
+
+        .res-img {
+            width: 100%;
+            border-radius: 30px;
+            margin: 20px 0;
+            border: 8px solid #F8FAFC;
+        }
+
         .footer {
             position: fixed;
             bottom: 0;
@@ -266,37 +273,10 @@
         }
 
         #retryBtn {
-            background: #E2E8F0;
+            background: #F1F5F9;
             color: #64748B;
             margin-top: 30px;
             width: 100%;
-        }
-
-        /* 리포트 결과 */
-        .res-container {
-            background: white;
-            border-radius: 40px;
-            padding: 50px 20px;
-            text-align: center;
-            border: 1px solid #F1F5F9;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
-        }
-
-        .res-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: rgba(0, 209, 121, 0.1);
-            color: var(--primary);
-            border-radius: 10px;
-            font-weight: 950;
-            margin-bottom: 25px;
-        }
-
-        .res-img {
-            width: 100%;
-            border-radius: 35px;
-            margin: 25px 0;
-            border: 6px solid #F8FAFC;
         }
 
         .v-stamp {
@@ -306,7 +286,6 @@
             text-align: center;
             font-size: 0.75rem;
             color: #EEE;
-            font-weight: 900;
             pointer-events: none;
         }
     </style>
@@ -318,34 +297,23 @@
             <div id="progressBar"></div>
         </div>
         <header>HANGAON COMPANY</header>
-
         <div class="content">
-            <!-- 1. 계정 정보 (진단시작하기 고정) -->
             <div id="stepInfo" class="page active">
                 <h2>반가워요 원장님!<br>입체 진단을 시작합니다.</h2>
-                <p class="desc">정밀한 분석을 위해 기초 정보를 입력해주세요.</p>
                 <div class="f-box"><span class="f-label">성함</span><input type="text" id="inName" class="f-input"
-                        placeholder="원장님 성함" oninput="uiUpdate()" onkeydown="handleEnter(event, 'inPhone')"></div>
+                        oninput="uiUpdate()" onkeydown="handleEnter(event, 'inPhone')"></div>
                 <div class="f-box"><span class="f-label">연락처</span><input type="tel" id="inPhone" class="f-input"
                         value="010-" oninput="formatPhone(this)" onkeydown="handleEnter(event, 'inEmail')"></div>
                 <div class="f-box"><span class="f-label">이메일</span><input type="email" id="inEmail" class="f-input"
-                        placeholder="example@email.com" oninput="uiUpdate()" onkeydown="handleEnter(event, 'agreeBox')">
-                </div>
-                <div class="domain-row">
-                    <button class="domain-btn" onclick="setDomain('@naver.com')">@naver.com</button>
-                    <button class="domain-btn" onclick="setDomain('@gmail.com')">@gmail.com</button>
-                    <button class="domain-btn" onclick="setDomain('@hanmail.net')">@hanmail.net</button>
-                </div>
+                        oninput="uiUpdate()" onkeydown="handleEnter(event, 'agreeBox')"></div>
                 <div class="f-check" id="agreeBox" onclick="toggleAgree()">
-                    <i id="agreeIcon" class="fas fa-check-circle" style="color:#DDD;"></i>
-                    <span style="font-weight:950; font-size:1.1rem;">개인정보 수집 및 상담 동의 (필수)</span>
+                    <i id="agreeIcon" class="fas fa-check-circle" style="color:#DDD; font-size:2rem;"></i><span
+                        style="font-weight:950; font-size:1.1rem;">개인정보 수집 및 상담 동의 (필수)</span>
                     <input type="checkbox" id="agree1" style="display:none">
                 </div>
             </div>
-
-            <!-- 2. 부문 선택 -->
             <div id="stepBranch" class="page">
-                <h2>경영 상태에 따라<br>분기가 시작됩니다.</h2>
+                <h2>경영 상태에 맞춰<br>분기가 시작됩니다.</h2>
                 <div class="card-list">
                     <div class="card" onclick="selectRoute('routeA')"><i class="fas fa-rocket"
                             style="color:var(--primary); font-size:2rem;"></i>
@@ -361,173 +329,88 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 3. 수치 입력 (Route B) -->
             <div id="stepStats" class="page">
                 <h2>월 평균 매출 수치를<br>선택해 주세요.</h2>
-                <p class="desc">현재 매출 구간을 선택하시면 정밀한 병목 진단이 가능합니다.</p>
                 <div id="salesArea" class="card-list"></div>
-                <div class="f-box" style="margin-top:25px;"><span class="f-label">일 평균 내원객 수 (명)</span><input
-                        type="number" id="inPatients" class="f-input" placeholder="예: 40" oninput="uiUpdate()"
-                        inputmode="numeric"></div>
-                <div class="f-box"><span class="f-label">희망 매출 목표 (만원)</span><input type="number" id="inTarget"
-                        class="f-input" placeholder="예: 8000" oninput="uiUpdate()" inputmode="numeric"></div>
+                <div class="f-box" style="margin-top:20px;"><span class="f-label">일 평균 내원객 수</span><input type="number"
+                        id="inPatients" class="f-input" inputmode="numeric" oninput="uiUpdate()"></div>
             </div>
-
-            <!-- 4. 정밀 문항 (완전 복구) -->
             <div id="stepQuestion" class="page">
-                <div id="qLabel"
-                    style="background:var(--primary); color:#FFF; padding:6px 15px; border-radius:10px; display:inline-block; font-weight:950; font-size:0.85rem; margin-bottom:15px;">
-                    진행</div>
-                <h2 id="txtQ">질문 제목</h2>
+                <h2 id="txtQ">질문</h2>
                 <div id="optArea" class="card-list"></div>
             </div>
-
-            <!-- 5. 고도화 결과 -->
             <div id="stepResult" class="page">
-                <div id="resBox" class="res-container"></div>
-                <button id="retryBtn" class="btn-base" onclick="location.reload()">다시하기</button>
+                <div id="resBox"></div><button id="retryBtn" class="btn-base" onclick="location.reload()">다시하기</button>
             </div>
         </div>
-
-        <div class="footer">
-            <button id="backBtn" class="btn-base" onclick="goBack()">이전</button>
-            <button id="ctaBtn" class="btn-base" onclick="handleNext()">진단시작하기</button>
-        </div>
-        <div class="v-stamp">MASTER BUILD v2.3.5</div>
+        <div class="footer"><button id="backBtn" class="btn-base" onclick="goBack()">이전</button><button id="ctaBtn"
+                class="btn-base" onclick="handleNext()">진단시작하기</button></div>
+        <div class="v-stamp">EXPERT MASTER v2.4.0</div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const state = {
-            page: 'stepInfo', route: null, step: 0, data: {}, user: { name: '', phone: '', email: '', sales: '', patients: '' },
-            salesRanges: ['1000만원 이하', '1000만~3000만', '3000만~5000만', '5000만~7000만', '7000만~1억', '1억~1.5억', '1.5억~2억', '2억~3억', '3억~5억', '5억 이상'],
-            qA: [ // Route A: 9 Items
-                { c: '규모/시설', q: '지향하시는 병원 규모는 어떠신가요?', o: ['실속형(1인 위주)', '정예화된 중형', '시스템 기반 대형'], k: 'A1' },
-                { c: '규모/시설', q: '입원실/수술실 운영 계획이 있으십니까?', o: ['외래 중심(30평 내외)', '특화 수술(50평 이상)', '입원 포함(100평 이상)'], k: 'A2' },
-                { c: '규모/시설', q: '초기 자본 투입 성향은?', o: ['자기 자본 위주 절약형', '공격적 대출 선점형'], k: 'A3' },
-                { c: '입지/환경', q: '고려하시는 상권의 형태는?', o: ['안정적 거주 밀집지', '유동인구 많은 역세권 도심'], k: 'A4' },
-                { c: '입지/환경', q: '주로 타겟팅하는 환자층은?', o: ['가족/노년(패밀리)', '사회초년생/직장인(MZ)', '특정 질환 전문 타겟'], k: 'A5' },
-                { c: '입지/환경', q: '가장 비중을 둘 마케팅 보조 채널은?', o: ['검색/플레이스', '블로그/SNS', '지역 맘카페/커뮤니티'], k: 'A6' },
-                { c: '모델/전략', q: '수익 모델의 핵심 비중은?', o: ['보험 진료 위주', '비급여 클리닉 중심'], k: 'A7' },
-                { c: '모델/전략', q: '원장님의 진료 스타일 유형은?', o: ['섬세한 상담/술기 중심', '최신 장비/기술 중심'], k: 'A8' },
-                { c: '모델/전략', q: '브랜드 운영 방식의 지향점은?', o: ['원장 퍼스널 브랜드', '네트워크/MSO 중심'], k: 'A9' }
+            page: 'stepInfo', route: null, step: 0, data: {}, user: { name: '', phone: '', email: '', sales: '' },
+            salesRanges: ['1000만원 이하', '1000만~5억', '5억 이상'],
+            qA: [
+                { c: '규모', q: '지향하시는 병원 규모는?', o: ['실속형(1인)', '시스템 대형'], k: 'A1' }, { c: '시설', q: '입원실 운영 계획은?', o: ['외래중심', '입원포함'], k: 'A2' }, { c: '자본', q: '초기 자본 투입 성향은?', o: ['절약형', '공격형'], k: 'A3' },
+                { c: '입지', q: '선호 상권 형태는?', o: ['거주 주거지', '도심 역세권'], k: 'A4' }, { c: '타겟', q: '주요 환자층은?', o: ['가족/노년', '직장인/MZ'], k: 'A5' }, { c: '마케팅', q: '주요 홍보 채널은?', o: ['오프라인', '온라인/SNS'], k: 'A6' },
+                { c: '수익', q: '진료 비중?', o: ['보험중심', '비급여특화'], k: 'A7' }, { c: '스타일', q: '진료 스타일?', o: ['원장술기', '장비기반'], k: 'A8' }, { c: '브랜드', q: '브랜드 운영?', o: ['개인브랜드', 'MSO네트워크'], k: 'A9' }
             ],
-            qB: [ // Route B: 18 Items
-                { c: 'CS', q: '전 직원 표준 응대 매뉴얼이 있나요?', k: 'B1' }, { c: 'CS', q: '내부 상담 결정율이 안정적인가요?', k: 'B2' }, { c: 'CS', q: '전화/온라인 응대 품질이 우수한가요?', k: 'B3' },
-                { c: '마케팅', q: '광고 매체별 유입 분석을 시행 중입니까?', k: 'B4' }, { c: '마케팅', q: '지역 검색 노출 순위가 1페이지 내 고정인가요?', k: 'B5' }, { c: '마케팅', q: '매출 대비 마케팅비 비중이 적절한가요?', k: 'B6' },
-                { c: 'HR', q: '직원 이직률이 낮은 편입니까?', k: 'B7' }, { c: 'HR', q: '내부 교육 프로토콜이 매월 실행되나요?', k: 'B8' }, { c: 'HR', q: '성과 보상 및 인센티브 체계가 있나요?', k: 'B9' },
-                { c: '진료수익', q: '환자당 평균 객단가가 목표치에 달성 중인가요?', k: 'B10' }, { c: '진료수익', q: '건보 청구 누락 방지 시스템이 있습니까?', k: 'B11' }, { c: '진료수익', q: '고객 대기 시간 관리가 양호한가요?', k: 'B12' },
-                { c: 'CRM', q: '재진 예약 및 부도율 관리가 됩니까?', k: 'B13' }, { c: 'CRM', q: '방문 후 해피콜 등 팔로업이 시행되나요?', k: 'B14' }, { c: 'CRM', q: 'VIP 고객에 대한 특별 관리가 있습니까?', k: 'B15' },
-                { c: '비전', q: '병원의 3년 내 비전 로드맵이 명확한가요?', k: 'B16' }, { c: '비전', q: '시스템 경영 및 지점 확장을 고려하시나요?', k: 'B17' }, { c: '비전', q: '원가 분석 및 재무 관리가 고도화되어 있나요?', k: 'B18' }
+            qB: [
+                { c: 'CS', q: '응대 매뉴얼이 있나요?', k: 'B1' }, { c: 'CS', q: '상담 결정율이 높은가요?', k: 'B2' }, { c: 'CS', q: '응대 품질이 좋은가요?', k: 'B3' },
+                { c: '마케팅', q: '유입 분석을 하나요?', k: 'B4' }, { c: '마케팅', q: '노출 순위가 높은가요?', k: 'B5' }, { c: '마케팅', q: '비용 비중이 적절한가요?', k: 'B6' },
+                { c: 'HR', q: '이직률이 낮은가요?', k: 'B7' }, { c: 'HR', q: '내부 교육을 하나요?', k: 'B8' }, { c: 'HR', q: '성과 보상이 있나요?', k: 'B9' },
+                { c: '수익', q: '환자 객단가가 목표치인가요?', k: 'B10' }, { c: '수익', q: '청구 누락 방지가 되나요?', k: 'B11' }, { c: '수익', q: '대기 관리가 되나요?', k: 'B12' },
+                { c: 'CRM', q: '재진 관리가 되나요?', k: 'B13' }, { c: 'CRM', q: '팔로업이 시행되나요?', k: 'B14' }, { c: 'CRM', q: 'VIP 관리가 있나요?', k: 'B15' },
+                { c: '비전', q: '로드맵이 명확한가요?', k: 'B16' }, { c: '비전', q: '시스템 경영 고려하나요?', k: 'B17' }, { c: '비전', q: '재무 관리가 되나요?', k: 'B18' }
             ]
         };
-
-        const cbt = document.getElementById('ctaBtn');
-        const bbt = document.getElementById('backBtn');
-
-        function formatPhone(el) { let v = el.value.replace(/[^0-9]/g, ''); if (v.length > 3 && v.length <= 7) el.value = v.substring(0, 3) + '-' + v.substring(3); else if (v.length > 7) el.value = v.substring(0, 3) + '-' + v.substring(3, 7) + '-' + v.substring(7, 11); else el.value = v; uiUpdate(); }
-        function handleEnter(e, nextId) { if (e.key === 'Enter') { e.preventDefault(); if (nextId === 'agreeBox') toggleAgree(); else document.getElementById(nextId).focus(); } }
-        function setDomain(d) { document.getElementById('inEmail').value = document.getElementById('inEmail').value.split('@')[0] + d; uiUpdate(); }
-
-        function toggleAgree() {
-            const chk = document.getElementById('agree1');
-            const box = document.getElementById('agreeBox');
-            chk.checked = !chk.checked;
-            if (chk.checked) { box.classList.add('checked'); document.getElementById('agreeIcon').style.color = "#00D179"; }
-            else { box.classList.remove('checked'); document.getElementById('agreeIcon').style.color = "#DDD"; }
-            uiUpdate();
-        }
-
+        const cbt = document.getElementById('ctaBtn'), bbt = document.getElementById('backBtn');
+        function formatPhone(el) { let v = el.value.replace(/[^0-9]/g, ''); el.value = v.substring(0, 3) + '-' + v.substring(3, 7) + '-' + v.substring(7, 11); uiUpdate(); }
+        function toggleAgree() { const chk = document.getElementById('agree1'); chk.checked = !chk.checked; document.getElementById('agreeIcon').style.color = chk.checked ? "#00D179" : "#DDD"; uiUpdate(); }
+        function handleEnter(e, id) { if (e.key === 'Enter') { e.preventDefault(); if (id === 'agreeBox') toggleAgree(); else document.getElementById(id).focus(); } }
         function uiUpdate() {
-            const n = document.getElementById('inName').value.trim();
-            const p = document.getElementById('inPhone').value.trim();
-            const e = document.getElementById('inEmail').value.trim();
-            const a = document.getElementById('agree1').checked;
-
-            let ready = false;
-            if (state.page === 'stepInfo') { ready = (n.length >= 2 && p.length >= 12 && e.includes('.') && a); cbt.innerText = '진단시작하기'; }
-            else if (state.page === 'stepStats') { ready = (state.user.sales !== '' && document.getElementById('inPatients').value > 0); cbt.innerText = '다음'; }
-            else { ready = true; cbt.innerText = (state.page === 'stepResult') ? '상담 신청하기' : '다음'; }
-
-            if (ready) cbt.classList.add('ready'); else cbt.classList.remove('ready');
+            const n = document.getElementById('inName').value, p = document.getElementById('inPhone').value, a = document.getElementById('agree1').checked;
+            let r = false; if (state.page === 'stepInfo') { r = (n.length >= 2 && p.length >= 12 && a); cbt.innerText = '진단시작하기'; } else if (state.page === 'stepStats') { r = (state.user.sales !== ''); cbt.innerText = '다음'; } else { r = true; cbt.innerText = '다음'; }
+            if (r) cbt.classList.add('ready'); else cbt.classList.remove('ready');
             bbt.style.display = (state.page === 'stepInfo') ? 'none' : 'flex';
-            document.getElementById('progressBar').style.width = (state.page === 'stepResult' ? 100 : (state.page === 'stepInfo' ? 10 : 30)) + '%';
+            document.getElementById('progressBar').style.width = (state.page === 'stepResult' ? 100 : 20) + '%';
         }
-
         function selectRoute(r) { state.route = r; handleNext(); }
         function handleNext() {
             if (!cbt.classList.contains('ready')) return;
             if (state.page === 'stepInfo') { state.page = 'stepBranch'; render(); }
             else if (state.page === 'stepBranch') { if (state.route === 'routeB') { state.page = 'stepStats'; renderSales(); } else state.page = 'stepQuestion'; render(); }
             else if (state.page === 'stepStats') { state.page = 'stepQuestion'; render(); }
-            else if (state.page === 'stepQuestion') {
-                const list = state.route === 'routeA' ? state.qA : state.qB;
-                if (state.step < list.length - 1) { state.step++; render(); }
-                else { state.page = 'stepResult'; render(); saveLead(); }
-            }
+            else if (state.page === 'stepQuestion') { const l = state.route === 'routeA' ? state.qA : state.qB; if (state.step < l.length - 1) { state.step++; render(); } else { state.page = 'stepResult'; render(); saveLead(); } }
         }
-
-        function renderSales() {
-            const sa = document.getElementById('salesArea'); sa.innerHTML = '';
-            state.salesRanges.forEach(r => {
-                const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<div class="card-txt"><h3>${r}</h3></div>`;
-                if (state.user.sales === r) d.classList.add('selected');
-                d.onclick = () => { state.user.sales = r; renderSales(); uiUpdate(); };
-                sa.appendChild(d);
-            });
-            render();
-        }
-
-        function goBack() {
-            if (state.page === 'stepQuestion') { if (state.step > 0) state.step--; else state.page = (state.route === 'routeB') ? 'stepStats' : 'stepBranch'; }
-            else if (state.page === 'stepStats') state.page = 'stepBranch';
-            else if (state.page !== 'stepInfo') state.page = 'stepInfo';
-            render();
-        }
-
+        function renderSales() { const sa = document.getElementById('salesArea'); sa.innerHTML = ''; state.salesRanges.forEach(r => { const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<h3>${r}</h3>`; if (state.user.sales === r) d.classList.add('selected'); d.onclick = () => { state.user.sales = r; renderSales(); uiUpdate(); }; sa.appendChild(d); }); render(); }
+        function goBack() { if (state.page === 'stepQuestion' && state.step > 0) state.step--; else if (state.page === 'stepStats') state.page = 'stepBranch'; else if (state.page !== 'stepInfo') state.page = 'stepInfo'; render(); }
         function render() {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(state.page).classList.add('active');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(state.page).classList.add('active');
             if (state.page === 'stepQuestion') {
-                const list = (state.route === 'routeA' ? state.qA : state.qB);
-                const cq = list[state.step];
-                document.getElementById('qLabel').innerText = `${cq.c} (${state.step + 1}/${list.length})`;
+                const l = state.route === 'routeA' ? state.qA : state.qB, cq = l[state.step], oA = document.getElementById('optArea'); oA.innerHTML = '';
                 document.getElementById('txtQ').innerText = cq.q;
-                const oA = document.getElementById('optArea'); oA.innerHTML = '';
-                if (state.route === 'routeA') {
-                    cq.o.forEach((o, i) => {
-                        const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<h3>${o}</h3>`;
-                        d.onclick = () => { state.data[cq.k] = i; handleNext(); }; oA.appendChild(d);
-                    });
-                } else {
-                    [{ v: 5, t: '매우 상/우수' }, { v: 3, t: '보통/관찰' }, { v: 1, t: '미흡/개선' }].forEach(s => {
-                        const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<h3>${s.t}</h3>`;
-                        d.onclick = () => { state.data[cq.k] = s.v; handleNext(); }; oA.appendChild(d);
-                    });
-                }
-            } else if (state.page === 'stepResult') { renderFinal(); }
-            uiUpdate(); document.querySelector('.content').scrollTop = 0;
+                cq.o ? cq.o.forEach((o, i) => { const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<h3>${o}</h3>`; d.onclick = () => { state.data[cq.k] = i; handleNext(); }; oA.appendChild(d); }) : [5, 3, 1].forEach(v => { const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<h3>${v === 5 ? '우수' : '미흡'}</h3>`; d.onclick = () => { state.data[cq.k] = v; handleNext(); }; oA.appendChild(d); });
+            } else if (state.page === 'stepResult') renderFinal();
+            uiUpdate(); if (document.querySelector('.content')) document.querySelector('.content').scrollTop = 0;
         }
-
         function renderFinal() {
-            const bx = document.getElementById('resBox');
+            const bx = document.getElementById('resBox'), d = state.data;
             if (state.route === 'routeA') {
-                const score = Object.values(state.data).reduce((a, b) => a + b, 0);
-                let p = { t: '시스템 메디컬 센터형', i: 'hospital_persona_medical_center_1773995174948.png', d: '안정적 인프라와 표준화된 시스템이 성공의 핵심입니다.' };
-                if (score <= 5) p = { t: '지역 밀착 동네 명의형', i: 'hospital_persona_neighborhood_healer_1773995146325.png', d: '환자와의 깊은 유대감을 통한 고정 고객 확보가 정답입니다.' };
-                bx.innerHTML = `<span class="res-badge">개원 페르소나 매칭</span><h2>원장님은 [${p.t}] 입니다.</h2><img src="${p.i}" class="res-img"><p class="desc">${p.d}</p>`;
+                const sys = d.A1 >= 1, urb = d.A4 === 1, spc = d.A7 === 1;
+                let rx = { t: '동네 주치의 명의형', i: 'hospital_persona_neighborhood_healer_1773995146325.png', s: '지역 커뮤니티 밀착 마케팅 전략 필수.', j: '회전율보다 재방문 주기 관리가 성공의 핵심입니다.' };
+                if (sys && urb && spc) rx = { t: '도심형 하이엔드 마스터', i: 'hospital_persona_urban_high_end_1773995130218.png', s: '높은 임대료 상쇄를 위한 고단가 패키지 구성.', j: '프리미엄 공간 구성을 통한 권위 설정이 필수입니다.' };
+                bx.innerHTML = `<div class="res-section"><span class="res-badge">진단 결과</span><h2>원장님은 [${rx.t}] 입니다.</h2><img src="${rx.i}" class="res-img"><div class="tip-box"><h4>전략</h4><p>${rx.s}</p></div><div class="tip-box"><h4>제언</h4><p>${rx.j}</p></div></div>`;
             } else {
-                bx.innerHTML = `<span class="res-badge">경영 정밀 진단</span><h2>정밀 분석 리포트 생성 완료</h2><canvas id="radarChart"></canvas><p class="desc">6대 영역 분석 결과, 원장님께 가장 필요한 병목 해결 솔루션을 제안해 드립니다.</p>`;
-                const domains = { CS: (state.data.B1 + state.data.B2 + state.data.B3) / 3 || 0, 마케팅: (state.data.B4 + state.data.B5 + state.data.B6) / 3 || 0, HR: (state.data.B7 + state.data.B8 + state.data.B9) / 3 || 0, 진료수익: (state.data.B10 + state.data.B11 + state.data.B12) / 3 || 0, CRM: (state.data.B13 + state.data.B14 + state.data.B15) / 3 || 0, 비전: (state.data.B16 + state.data.B17 + state.data.B18) / 3 || 0 };
-                setTimeout(() => { new Chart(document.getElementById('radarChart'), { type: 'radar', data: { labels: Object.keys(domains), datasets: [{ label: '진단 점수', data: Object.values(domains), backgroundColor: 'rgba(0,209,121,0.2)', borderColor: '#00D179', borderWidth: 3 }] }, options: { scales: { r: { max: 5, min: 0 } } } }); }, 100);
+                const dm = { CS: (d.B1 + d.B2 + d.B3) / 3, 마케팅: (d.B4 + d.B5 + d.B6) / 3, HR: (d.B7 + d.B8 + d.B9) / 3, CRM: (d.B13 + d.B14 + d.B15) / 3 };
+                const s = Object.entries(dm).sort((a, b) => a[1] - b[1]), b1 = s[0][0], b2 = s[1][0];
+                bx.innerHTML = `<div class="res-section"><span class="res-badge">경영 진단</span><h2>TOP 2 병목: [${b1} / ${b2}]</h2><canvas id="radarChart"></canvas><div class="tip-box"><h4>처방</h4><p>${b1}과 ${b2} 영역의 보완이 시급하며, 시스템 재구축을 권장합니다.</p></div></div>`;
+                setTimeout(() => { new Chart(document.getElementById('radarChart'), { type: 'radar', data: { labels: Object.keys(dm), datasets: [{ data: Object.values(dm), borderColor: '#00D179', backgroundColor: 'rgba(0,209,121,0.1)' }] }, options: { scales: { r: { max: 5, min: 0 } } } }); }, 100);
             }
         }
-
-        async function saveLead() {
-            const payload = { data: [{ time: new Date().toLocaleString(), name: document.getElementById('inName').value, phone: document.getElementById('inPhone').value, email: document.getElementById('inEmail').value, route: state.route, answers: JSON.stringify(state.data), sales: state.user.sales }] };
-            fetch('https://sheetdb.io/api/v1/3reeb3ra3fklt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        }
+        async function saveLead() { fetch('https://sheetdb.io/api/v1/3reeb3ra3fklt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ data: [{ time: new Date().toLocaleString(), name: document.getElementById('inName').value, route: state.route, answers: JSON.stringify(state.data) }] }) }); }
         uiUpdate();
     </script>
 </body>
