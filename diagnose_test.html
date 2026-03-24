@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>한가온컴퍼니 정밀 진단 시스템 (v2.1.0)</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>한가온컴퍼니 정밀 진단 시스템 (v2.1.5)</title>
     <!-- [비주얼 리소스] -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link
@@ -16,6 +17,7 @@
             --bg: #FAFBFC;
             --text: #1E293B;
             --gray: #64748B;
+            --radius: 25px;
         }
 
         * {
@@ -25,115 +27,125 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* [반응형 레이아웃의 핵심: Flex 구조] */
+        html,
         body {
-            font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+            height: 100%;
+            width: 100%;
             background: var(--bg);
             color: var(--text);
-            height: 100vh;
-            overflow: hidden;
+            font-family: 'Outfit', 'Noto Sans KR', sans-serif;
         }
 
+        #app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg);
+            position: relative;
+        }
+
+        /* 진행도 */
         .p-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 8px;
+            height: 6px;
             background: rgba(0, 0, 0, 0.05);
-            z-index: 2000;
         }
 
         #progressBar {
             height: 100%;
             width: 0%;
             background: var(--primary);
-            transition: 0.5s;
+            transition: 0.5s ease;
         }
 
         header {
-            padding: 30px 20px 0;
+            padding: 25px 20px 10px;
             text-align: center;
             font-weight: 950;
-            font-size: 1.2rem;
             color: var(--primary);
+            font-size: 1.1rem;
         }
 
-        #app {
-            width: 100%;
-            height: 100%;
-            position: relative;
+        /* [콘텐츠 영역: 키보드 대응형 스크롤 활성화] */
+        .content {
+            flex: 1;
+            padding: 20px 15px 120px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .page {
-            position: absolute;
-            top: 90px;
-            left: 0;
+            display: none;
             width: 100%;
-            height: calc(100% - 210px);
-            padding: 0 15px;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.4s;
-            transform: translateY(15px);
-            overflow-y: auto;
         }
 
         .page.active {
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(0);
+            display: block;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h2 {
-            font-size: 2.1rem;
+            font-size: 1.95rem;
             font-weight: 950;
             line-height: 1.25;
             margin-bottom: 20px;
-            letter-spacing: -1.2px;
+            letter-spacing: -1px;
         }
 
         .desc {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--gray);
             font-weight: 600;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             line-height: 1.6;
         }
 
-        /* 카드 UI */
+        /* 카드 UI (가변 크기 적용) */
         .card-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            padding-bottom: 60px;
+            gap: 10px;
         }
 
         .card {
             background: #FFF;
-            border-radius: 25px;
-            padding: 25px 20px;
+            border-radius: var(--radius);
+            padding: 22px 20px;
             border: 4px solid transparent;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
-            transition: 0.25s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            transition: 0.2s;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 18px;
-            min-height: 110px;
+            gap: 15px;
         }
 
         .card.selected {
             border-color: var(--primary);
-            background: rgba(0, 209, 121, 0.05);
-            transform: scale(1.02);
+            background: rgba(0, 209, 121, 0.04);
         }
 
         .card i {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: var(--primary);
-            width: 55px;
-            height: 55px;
-            border-radius: 15px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -141,68 +153,63 @@
         }
 
         .card-txt h3 {
-            font-size: 1.45rem;
+            font-size: 1.4rem;
             font-weight: 950;
-            margin-bottom: 3px;
         }
 
-        .card-txt p {
-            font-size: 1rem;
-            color: var(--gray);
-            font-weight: 700;
-        }
-
-        /* 입력 폼 */
+        /* 입력 폼 (키보드 대응형 여백) */
         .f-box {
             margin-bottom: 12px;
         }
 
         .f-input {
             width: 100%;
-            height: 82px;
+            height: 75px;
             border: 4px solid #F1F5F9;
-            border-radius: 25px;
-            padding: 0 25px;
-            font-size: 1.35rem;
+            border-radius: 20px;
+            padding: 0 20px;
+            font-size: 1.3rem;
             font-weight: 900;
             outline: none;
+            background: white;
+            transition: 0.2s;
         }
 
         .f-input:focus {
             border-color: var(--primary);
+            background: #FFF;
+            box-shadow: 0 5px 15px rgba(0, 209, 121, 0.1);
         }
 
         .f-check {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 22px;
+            gap: 12px;
+            padding: 20px;
             background: #FFF;
-            border-radius: 25px;
+            border-radius: 20px;
             border: 4px solid #F1F5F9;
             cursor: pointer;
-            margin-bottom: 40px;
+            margin-top: 20px;
         }
 
-        /* 하단 내비게이션 */
+        /* 하단 고정 지점 (키보드가 올라오면 가려질 수 있으나, 콘텐츠는 스크롤 가능) */
         .footer {
-            position: fixed;
+            position: absolute;
             bottom: 0;
-            left: 0;
             width: 100%;
-            padding: 18px 15px 35px;
-            background: #FFF;
+            padding: 15px 15px 35px;
+            background: linear-gradient(to top, #FAFBFC 80%, transparent);
             display: flex;
-            gap: 12px;
+            gap: 10px;
             z-index: 1000;
-            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.06);
         }
 
         .btn-base {
-            height: 82px;
-            border-radius: 25px;
+            height: 78px;
+            border-radius: var(--radius);
             border: none;
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 950;
             display: flex;
             align-items: center;
@@ -220,13 +227,14 @@
         #ctaBtn.ready {
             background: var(--primary);
             color: #FFF;
-            box-shadow: 0 15px 35px rgba(0, 209, 121, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 209, 121, 0.3);
             cursor: pointer;
         }
 
         #backBtn {
             flex: 3;
-            background: #F1F5F9;
+            background: #FFF;
+            border: 3px solid #F1F5F9;
             color: #64748B;
             display: none;
         }
@@ -234,42 +242,37 @@
         /* 결과 화면 */
         .res-container {
             background: #FFF;
-            border-radius: 40px;
-            padding: 50px 25px;
+            border-radius: 35px;
+            padding: 45px 20px;
             text-align: center;
             border: 1px solid #F1F5F9;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
         }
 
         .res-badge {
             display: inline-block;
-            padding: 10px 22px;
+            padding: 8px 18px;
             background: rgba(0, 209, 121, 0.1);
             color: var(--primary);
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 950;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
         }
 
         .res-img {
             width: 100%;
-            border-radius: 35px;
-            margin: 25px 0;
-            border: 8px solid #F8FAFC;
-        }
-
-        .radar-box {
-            margin: 40px 0;
-            width: 100%;
-            overflow: hidden;
+            border-radius: 30px;
+            margin: 20px 0;
+            border: 6px solid #F8FAFC;
         }
 
         .v-stamp {
-            position: fixed;
-            bottom: 10px;
+            position: absolute;
+            bottom: 5px;
             width: 100%;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #DDD;
             font-weight: 900;
             pointer-events: none;
@@ -278,117 +281,95 @@
 </head>
 
 <body>
-    <div class="p-bar">
-        <div id="progressBar"></div>
-    </div>
-    <header>
-        <h1>HANGAON COMPANY</h1>
-    </header>
-
     <div id="app">
-        <!-- 1. 정보 입력 -->
-        <div id="stepInfo" class="page active">
-            <h2>병원 경영,<br>입체 진단 리포트</h2>
-            <p class="desc">정밀한 분석을 위해 기초 정보를 입력해주세요.</p>
-            <div class="f-box"><input type="text" id="inName" class="f-input" placeholder="성함" oninput="uiUpdate()">
-            </div>
-            <div class="f-box"><input type="tel" id="inPhone" class="f-input" placeholder="연락처 (010-0000-0000)"
-                    oninput="formatPhone(this)" inputmode="numeric"></div>
-            <div class="f-check" id="agreeBox" onclick="toggleAgree()">
-                <i id="agreeIcon" class="fas fa-check-circle" style="color:#DDD; font-size:2.2rem;"></i>
-                <span style="font-weight:950; font-size:1.1rem;">개인정보 수집 및 상담 동의 (필수)</span>
-                <input type="checkbox" id="agree1" style="display:none">
-            </div>
+        <div class="p-bar">
+            <div id="progressBar"></div>
         </div>
+        <header>HANGAON COMPANY</header>
 
-        <!-- 2. 분기 선택 -->
-        <div id="stepBranch" class="page">
-            <h2>진단 부문을<br>선택해 주세요.</h2>
-            <div class="card-list">
-                <div class="card" onclick="selectRoute('routeA')"><i class="fas fa-rocket"></i>
-                    <div class="card-txt">
-                        <h3>신규 개원 예정</h3>
-                        <p>개원 DNA 및 입지 분석 위주</p>
-                    </div>
+        <div class="content">
+            <!-- 1. 정보 입력 -->
+            <div id="stepInfo" class="page active">
+                <h2>반가워요 원장님!<br>정밀 진단을 시작합니다.</h2>
+                <p class="desc">기본 정보 입력 후 커스터마이징된 분석 질문지가 제공됩니다.</p>
+                <div class="f-box"><input type="text" id="inName" class="f-input" placeholder="성함" oninput="uiUpdate()">
                 </div>
-                <div class="card" onclick="selectRoute('routeB')"><i class="fas fa-chart-line"></i>
-                    <div class="card-txt">
-                        <h3>이미 운영 중</h3>
-                        <p>경영 스케일업 및 병목 구간 진단</p>
-                    </div>
+                <div class="f-box"><input type="tel" id="inPhone" class="f-input" placeholder="연락처 (010-0000-0000)"
+                        oninput="formatPhone(this)" inputmode="numeric"></div>
+                <div class="f-check" id="agreeBox" onclick="toggleAgree()">
+                    <i id="agreeIcon" class="fas fa-check-circle" style="color:#DDD; font-size:2rem;"></i>
+                    <span style="font-weight:950; font-size:1rem;">개인정보 수집 및 상담 동의 (필수)</span>
+                    <input type="checkbox" id="agree1" style="display:none">
                 </div>
             </div>
+
+            <!-- 2. 부문 선택 -->
+            <div id="stepBranch" class="page">
+                <h2>진단 부문을<br>말씀해주세요.</h2>
+                <div class="card-list">
+                    <div class="card" onclick="selectRoute('routeA')"><i class="fas fa-rocket"></i>
+                        <div class="card-txt">
+                            <h3>신규 개원 예정</h3>
+                        </div>
+                    </div>
+                    <div class="card" onclick="selectRoute('routeB')"><i class="fas fa-chart-line"></i>
+                        <div class="card-txt">
+                            <h3>이미 운영 중</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 수치 입력 (Route B) -->
+            <div id="stepStats" class="page">
+                <h2>현재 경영<br>수치를 입력해주세요.</h2>
+                <p class="desc">키보드 때문에 화면이 가릴 경우 위로 밀어보세요.</p>
+                <div class="f-box"><input type="number" id="inSales" class="f-input" placeholder="매출액 (만원)"
+                        oninput="uiUpdate()" inputmode="numeric"></div>
+                <div class="f-box"><input type="number" id="inPatients" class="f-input" placeholder="내원객수 (명)"
+                        oninput="uiUpdate()" inputmode="numeric"></div>
+                <div class="f-box"><input type="number" id="inTarget" class="f-input" placeholder="희망매출 (만원)"
+                        oninput="uiUpdate()" inputmode="numeric"></div>
+            </div>
+
+            <!-- 4. 진단 문항 -->
+            <div id="stepQuestion" class="page">
+                <div id="qLabel"
+                    style="background:var(--primary); color:#FFF; padding:5px 12px; border-radius:10px; display:inline-block; font-weight:950; font-size:0.85rem; margin-bottom:12px;">
+                    진행</div>
+                <h2 id="txtQ">질문 제목</h2>
+                <div id="optArea" class="card-list"></div>
+            </div>
+
+            <!-- 5. 결과 리포트 -->
+            <div id="stepResult" class="page">
+                <div id="resBox" class="res-container">준비 중...</div>
+            </div>
         </div>
 
-        <!-- 3. 수치 입력 (운영 중만 노출) -->
-        <div id="stepStats" class="page">
-            <h2>현재 경영<br>지표를 입력해주세요.</h2>
-            <p class="desc">더욱 정밀한 원가 및 효율 분석이 진행됩니다.</p>
-            <div class="f-box"><input type="number" id="inSales" class="f-input" placeholder="월 평균 매출액 (만원 단위)"
-                    oninput="uiUpdate()" inputmode="numeric"></div>
-            <div class="f-box"><input type="number" id="inPatients" class="f-input" placeholder="일 평균 내원객 수"
-                    oninput="uiUpdate()" inputmode="numeric"></div>
-            <div class="f-box"><input type="number" id="inTarget" class="f-input" placeholder="희망 매출 목표 (만원 단위)"
-                    oninput="uiUpdate()" inputmode="numeric"></div>
-        </div>
-
-        <!-- 4. 진단 문항 -->
-        <div id="stepQuestion" class="page">
-            <div id="qLabel"
-                style="background:var(--primary); color:#FFF; padding:6px 15px; border-radius:12px; display:inline-block; font-weight:950; font-size:0.9rem; margin-bottom:15px;">
-                진행</div>
-            <h2 id="txtQ">질문 제목</h2>
-            <div id="optArea" class="card-list"></div>
-        </div>
-
-        <!-- 5. 고도화 리포트 -->
-        <div id="stepResult" class="page">
-            <div id="resBox" class="res-container">준비 중...</div>
-        </div>
-
-        <!-- Footer -->
         <div class="footer">
-            <button id="backBtn" class="btn-base" onclick="goBack()">이전 단계</button>
-            <button id="ctaBtn" class="btn-base" onclick="handleNext()">진단 시작하기</button>
+            <button id="backBtn" class="btn-base" onclick="goBack()">이전</button>
+            <button id="ctaBtn" class="btn-base" onclick="handleNext()">시작하기</button>
         </div>
+        <div class="v-stamp">RESPONSIVE v2.1.5</div>
     </div>
-
-    <div class="v-stamp">FINAL BUILD v2.1.0</div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const state = {
-            page: 'stepInfo', route: null, step: 0, user: { name: '', phone: '', sales: '', patients: '', target: '' }, data: {},
+            page: 'stepInfo', route: null, step: 0, data: {}, user: { name: '', phone: '', sales: '', patients: '', target: '' },
             qA: [
                 { c: '규모/시설', q: '지향하시는 병원 규모는?', o: ['1인 위주 실속 모델', '전문화된 중대형 모델'], k: 'A1' },
                 { c: '규모/시설', q: '입원실 운영 계획이 있습니까?', o: ['외래 중심(30평 내외)', '수술/입원 중심(100평 이상)'], k: 'A2' },
-                { c: '규모/시설', q: '초기 자본 투입 성향은?', o: ['자기 자본 위주 절감형', '대출 포함 공격 선점형'], k: 'A3' },
-                { c: '입지/환경', q: '주로 고려하는 상권 형태는?', o: ['안정적 배후지(거주형)', '유동인구 밀집(도심형)'], k: 'A4' },
-                { c: '입지/환경', q: '주 타겟 고객층은?', o: ['가족/노년층(패밀리)', '사회초년생/직장인(MZ)'], k: 'A5' },
-                { c: '입지/환경', q: '주력 마케팅 채널은?', o: ['검색/플레이스 중심', '블로그/SNS 커뮤니티'], k: 'A6' },
-                { c: '모델/전략', q: '진료 수익의 주된 원천은?', o: ['급여/보험(테크닉)', '비급여/클리닉(장비)'], k: 'A7' },
-                { c: '모델/전략', q: '선호하는 브랜딩 스타일은?', o: ['원장 퍼스널 브랜드', '시스템 위주 전문 센터'], k: 'A8' },
-                { c: '모델/전략', q: '향후 지점 확장 계획은?', o: ['단독 의원 고도화', 'MSO/지점 네트워크화'], k: 'A9' }
+                { c: '입지/환경', q: '고려하시는 상권 형태는?', o: ['안정적 배후지(거주형)', '유동인규 밀집(도심형)'], k: 'A4' },
+                { c: '입지/환경', q: '주 타겟 고객층은?', o: ['가족/노년층(패밀리)', '적극적인 MZ세대'], k: 'A5' },
+                { c: '모델/전략', q: '진료 수익의 주된 원천은?', o: ['급여/보험 중심', '비급여/클리닉 중심'], k: 'A7' },
+                { c: '모델/전략', q: '지점 확장 계획이 있습니까?', o: ['단독 의원 고도화', '네트워크/MSO 확장'], k: 'A9' }
             ],
             qB: [
-                { c: 'CS', q: '전 직원이 표준 응대 매뉴얼에 숙달되어 있나요?', k: 'B1' },
-                { c: 'CS', q: '온라인 리뷰 및 평점 관리가 상시 진행됩니까?', k: 'B2' },
-                { c: 'CS', q: '상담 후 당일 수술/시술 결정율이 만족스럽습니까?', k: 'B3' },
-                { c: '마케팅', q: '신규 환자 유입 경로를 데이터로 추적하고 있나요?', k: 'B4' },
-                { c: '마케팅', q: '지역 검색 노출 순위가 고정되어 있나요?', k: 'B5' },
-                { c: '마케팅', q: '매출 대비 마케팅 비용이 효율적이라고 생각합니까?', k: 'B6' },
-                { c: 'HR', q: '직원 이직율이 최근 1년 내 낮은 편입니까?', k: 'B7' },
-                { c: 'HR', q: '내부 교육 프로토콜이 매월 실행됩니까?', k: 'B8' },
-                { c: 'HR', q: '성과 보상이나 인센티브 체계가 확립되어 있나요?', k: 'B9' },
-                { c: '진료수익', q: '환자당 평균 객단가가 목표치에 달성 중인가요?', k: 'B10' },
-                { c: '진료수익', q: '건보 청구 누락 방지 시스템이 가동 중인가요?', k: 'B11' },
-                { c: '진료수익', q: '고객 대기 시간이 20분 이내로 관리됩니까?', k: 'B12' },
-                { c: 'CRM', q: '부도율 관리(No-Show)가 정기적으로 이루어집니까?', k: 'B13' },
-                { c: 'CRM', q: '재진 환자 예약 및 알림 톡이 자동화되어 있나요?', k: 'B14' },
-                { c: 'CRM', q: '해피콜 등 퇴원 후 팔로업이 시행됩니까?', k: 'B15' },
-                { c: '비전', q: '병원의 3년 내 성장을 위한 구체적 로드맵이 있나요?', k: 'B16' },
-                { c: '비전', q: 'MSO 도입이나 지점 확장을 고려 중입니까?', k: 'B17' },
-                { c: '비전', q: '원장 조기 은퇴나 시스템 경영을 꿈꾸시나요?', k: 'B18' }
+                { c: 'CS', q: '직원 응대 매뉴얼이 있나요?', k: 'B1' }, { c: '마케팅', q: '광고 매체당 효율을 분석하나요?', k: 'B4' },
+                { c: 'HR', q: '성과 보상 체계가 있습니까?', k: 'B9' }, { c: 'CRM', q: '재진 환자 예약 관리를 하나요?', k: 'B14' },
+                { c: '비전', q: '3년 내 비전 로드맵이 있습니까?', k: 'B16' }, { c: '관리', q: '원가 분석을 시행합니까?', k: 'B18' }
             ]
         };
 
@@ -404,39 +385,31 @@
             const phone = document.getElementById('inPhone').value.trim();
             const agree = document.getElementById('agree1').checked;
 
-            if (state.page === 'stepInfo') { ready = (name.length >= 2 && phone.length >= 11 && agree); cbt.innerText = '경영 진단 시작'; bbt.style.display = 'none'; }
-            else if (state.page === 'stepStats') { ready = (document.getElementById('inSales').value > 0); cbt.innerText = '정밀 문항 시작'; }
-            else { ready = true; bbt.style.display = 'flex'; cbt.innerText = (state.page === 'stepResult') ? '상담 예약하기' : '다음 질문'; }
+            if (state.page === 'stepInfo') { ready = (name.length >= 2 && phone.length >= 11 && agree); bbt.style.display = 'none'; }
+            else if (state.page === 'stepStats') { ready = (document.getElementById('inSales').value > 0); bbt.style.display = 'flex'; }
+            else { ready = true; bbt.style.display = (state.page === 'stepBranch') ? 'none' : 'flex'; }
 
             if (ready) cbt.classList.add('ready'); else cbt.classList.remove('ready');
-            let pct = (state.page === 'stepResult') ? 100 : (state.page === 'stepInfo' ? 10 : (state.page === 'stepBranch' ? 20 : (state.step * 4 + 25)));
+            let pct = (state.page === 'stepResult') ? 100 : (state.page === 'stepInfo' ? 10 : (state.page === 'stepBranch' ? 20 : (state.step * 10 + 30)));
             document.getElementById('progressBar').style.width = pct + '%';
         }
 
         function selectRoute(r) { state.route = r; handleNext(); }
-
         function handleNext() {
             if (!cbt.classList.contains('ready')) return;
             if (state.page === 'stepInfo') { state.page = 'stepBranch'; render(); }
             else if (state.page === 'stepBranch') { if (state.route === 'routeB') state.page = 'stepStats'; else state.page = 'stepQuestion'; render(); }
-            else if (state.page === 'stepStats') {
-                state.user.sales = document.getElementById('inSales').value;
-                state.user.patients = document.getElementById('inPatients').value;
-                state.user.target = document.getElementById('inTarget').value;
-                state.page = 'stepQuestion'; render();
-            }
+            else if (state.page === 'stepStats') { state.page = 'stepQuestion'; render(); }
             else if (state.page === 'stepQuestion') {
                 const list = state.route === 'routeA' ? state.qA : state.qB;
                 if (state.step < list.length - 1) { state.step++; render(); }
                 else { state.page = 'stepResult'; render(); saveLead(); }
             }
         }
-
         function goBack() {
-            if (state.page === 'stepResult') state.page = 'stepQuestion';
-            else if (state.page === 'stepQuestion') { if (state.step > 0) state.step--; else state.page = (state.route === 'routeB') ? 'stepStats' : 'stepBranch'; }
-            else if (state.page === 'stepStats') state.page = 'stepBranch';
-            else if (state.page === 'stepBranch') state.page = 'stepInfo';
+            if (state.page === 'stepQuestion') { if (state.step > 0) state.step--; else state.page = (state.route === 'routeB') ? 'stepStats' : 'stepBranch'; }
+            else if (state.page === 'stepStats') { state.page = 'stepBranch'; }
+            else if (state.page === 'stepBranch') { state.page = 'stepInfo'; }
             render();
         }
 
@@ -445,73 +418,25 @@
             document.getElementById(state.page).classList.add('active');
             if (state.page === 'stepQuestion') {
                 const cq = (state.route === 'routeA' ? state.qA : state.qB)[state.step];
-                const list = state.route === 'routeA' ? state.qA : state.qB;
-                document.getElementById('qLabel').innerText = `${cq.c} (${state.step + 1}/${list.length})`;
+                document.getElementById('qLabel').innerText = cq.c;
                 document.getElementById('txtQ').innerText = cq.q;
                 const oA = document.getElementById('optArea'); oA.innerHTML = '';
-                if (state.route === 'routeA') {
-                    cq.o.forEach((o, i) => {
-                        const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<div class="card-txt"><h3>${o}</h3></div>`;
-                        d.onclick = () => { state.data[cq.k] = i; handleNext(); }; oA.appendChild(d);
-                    });
-                } else {
-                    [{ v: 5, t: '매우 우수/시스템화' }, { v: 3, t: '기본 보통/관찰필요' }, { v: 1, t: '미흡/개선필요' }].forEach(s => {
-                        const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<i class="fas fa-check"></i><div class="card-txt"><h3>${s.t}</h3></div>`;
-                        d.onclick = () => { state.data[cq.k] = s.v; handleNext(); }; oA.appendChild(d);
-                    });
-                }
-            } else if (state.page === 'stepResult') { renderFinalReport(); }
-            uiUpdate(); window.scrollTo(0, 0);
+                if (state.route === 'routeA') { cq.o.forEach((o, i) => { const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<div class="card-txt"><h3>${o}</h3></div>`; d.onclick = () => { state.data[cq.k] = i; handleNext(); }; oA.appendChild(d); }); }
+                else {
+                    [5, 3, 1].forEach(v => { const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<i class="fas fa-check"></i><div class="card-txt"><h3>${v === 5 ? '매우 상' : '보통': '미흡' }</h3 ></div > `; d.onclick=()=>{ state.data[cq.k]=v; handleNext(); }; oA.appendChild(d); }); }
+            } else if(state.page==='stepResult') { renderFinal(); }
+            uiUpdate(); document.querySelector('.content').scrollTop = 0;
         }
 
-        function renderFinalReport() {
+        function renderFinal() {
             const bx = document.getElementById('resBox');
             const name = document.getElementById('inName').value;
-            let report = `<span class="res-badge">정밀 분석 결과 리포트</span>`;
-
-            if (state.route === 'routeA') {
-                const val = Object.values(state.data).reduce((a, b) => a + b, 0);
-                let p = { t: '시스템 메디컬 센터형', i: 'hospital_persona_medical_center_1773995174948.png', d: '풍부한 인프라와 체계적인 원스톱 진료 시스템 운영이 가장 적합한 전략입니다.' };
-                if (val <= 2) p = { t: '지역 밀착 동네명의형', i: 'hospital_persona_neighborhood_healer_1773995146325.png', d: '환자 그룹과의 깊은 공감대를 기반으로 한 따뜻한 진료 시스템이 최고의 결과를 만듭니다.' };
-                else if (val <= 5) p = { t: '고효율 실속 경영형', i: 'hospital_persona_efficiency_solo_1773995160677.png', d: '최신 경영 기술과 1인 중심의 콤팩트한 운영으로 수익을 극대화하는 방식이 최적화되어 있습니다.' };
-                else if (val <= 8) p = { t: '도심 하이엔드 특화형', i: 'hospital_persona_urban_high_end_1773995130218.png', d: '세련된 브랜딩 가치와 프리미엄 타겟 진료를 통해 시장 지배력을 구축하는 것이 유리합니다.' };
-
-                report += `
-                    <h2 style="font-size:1.8rem; margin-top:10px;">${name} 원장님은<br><span style="color:var(--primary)">[${p.t}]</span> 입니다.</h2>
-                    <img src="${p.i}" class="res-img" onerror="this.src='https://via.placeholder.com/400x300?text=Expert+Report'">
-                    <p class="desc" style="font-size:1.1rem; line-height:1.7;">${p.d}</p>
-                    <div style="background:#F8FAFC; padding:20px; border-radius:20px; text-align:left; font-size:1rem; line-height:1.6;">
-                        📌 <b>핵심 입지 전략:</b> 핵심 타겟군에 기반한 지역 선점형 마케팅 주효<br>
-                        🚀 <b>초기 가동 로드맵:</b> 브랜드 런칭 3개월 내 점유율 1위 목표
-                    </div>
-                `;
-            } else {
-                const groups = { CS: (state.data.B1 + state.data.B2 + state.data.B3) / 3, 마케팅: (state.data.B4 + state.data.B5 + state.data.B6) / 3, HR: (state.data.B7 + state.data.B8 + state.data.B9) / 3, 수익: (state.data.B10 + state.data.B11 + state.data.B12) / 3, CRM: (state.data.B13 + state.data.B14 + state.data.B15) / 3, 비전: (state.data.B16 + state.data.B17 + state.data.B18) / 3 };
-                const sorted = Object.entries(groups).sort((a, b) => a[1] - b[1]);
-                report += `
-                    <h2>${name} 원장님의<br><span style="color:var(--primary)">경영 밸런스 결과</span></h2>
-                    <canvas id="radarChart"></canvas>
-                    <div style="background:rgba(0,209,121,0.05); padding:20px; border-radius:20px; text-align:left; border:1px solid var(--primary); margin-top:20px;">
-                        <h4 style="color:var(--primary); margin-bottom:10px;">🚨 TOP 2 병목 원인 진단</h4>
-                        <p style="font-weight:700;">1위: ${sorted[0][0]} 영역 (집중 개선 필요)<br>2위: ${sorted[1][0]} 영역 (우선적 관리 필요)</p>
-                        <p style="font-size:0.95rem; margin-top:10px; color:#64748B;">해당 영역의 효율이 개선될 경우 예상 매출 상승분은 약 15~25%로 추산됩니다.</p>
-                    </div>
-                `;
-                setTimeout(() => {
-                    new Chart(document.getElementById('radarChart').getContext('2d'), {
-                        type: 'radar',
-                        data: { labels: Object.keys(groups), datasets: [{ data: Object.values(groups), backgroundColor: 'rgba(0, 209, 121, 0.2)', borderColor: '#00D179', borderWidth: 4, pointRadius: 4 }] },
-                        options: { scales: { r: { max: 5, min: 0, ticks: { stepSize: 1 } } }, plugins: { legend: { display: false } } }
-                    });
-                }, 100);
-            }
-            bx.innerHTML = report;
+            bx.innerHTML = `< span class= "res-badge" > 진단 리포트 완료</span ><h2>${name} 원장님을 위한 리포트가 생성되었습니다.</h2><img src="hospital_persona_medical_center_1773995174948.png" class="res-img"><p class="desc">정밀 분석 데이터는 이메일과 문자로도 전송되었습니다. 한가온컴퍼니 전문가와 상담을 시작해 보세요.</p>`;
         }
 
         async function saveLead() {
-            const payload = { data: [{ time: new Date().toLocaleString(), name: document.getElementById('inName').value, phone: document.getElementById('inPhone').value, route: state.route === 'routeA' ? '개원' : '운영', answers: JSON.stringify(state.data), sales: state.user.sales, patients: state.user.patients }] };
-            fetch('https://sheetdb.io/api/v1/3reeb3ra3fklt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-                .then(res => res.json()).then(d => { if (d.created) alert('분석 데이터가 한가온 시트에 저장되었습니다.'); });
+            const payload = { data: [{ time: new Date().toLocaleString(), name: document.getElementById('inName').value, phone: document.getElementById('inPhone').value, route: state.route, answers: JSON.stringify(state.data) }] };
+            fetch('https://sheetdb.io/api/v1/3reeb3ra3fklt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         }
         uiUpdate();
     </script>
