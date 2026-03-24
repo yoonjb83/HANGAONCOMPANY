@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>한가온컴퍼니 정밀 진단 시스템 (v2.0.7)</title>
+    <!-- [디자인 리소스] -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Noto+Sans+KR:wght@700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00D179;
+            --bg: #FAFBFC;
+            --text: #111;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .p-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.05);
+            z-index: 2000;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            transition: 0.5s;
+        }
+
+        header {
+            padding: 30px 20px 0;
+            font-weight: 950;
+            font-size: 1.3rem;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+        }
+
+        .page {
+            position: absolute;
+            top: 90px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 220px);
+            padding: 0 15px;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.4s;
+            transform: translateY(15px);
+            overflow-y: auto;
+        }
+
+        .page.active {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-size: 2.1rem;
+            font-weight: 950;
+            line-height: 1.25;
+            margin-bottom: 20px;
+            letter-spacing: -1.2px;
+        }
+
+        .desc {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 50px;
+        }
+
+        .card {
+            background: #FFF;
+            border-radius: 25px;
+            padding: 30px 20px;
+            border: 4px solid transparent;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+            transition: 0.2s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            min-height: 120px;
+        }
+
+        .card.selected {
+            border-color: var(--primary);
+            background: rgba(0, 209, 121, 0.05);
+        }
+
+        .card i {
+            font-size: 2.3rem;
+            color: var(--primary);
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-txt h3 {
+            font-size: 1.5rem;
+            font-weight: 950;
+        }
+
+        .f-input {
+            width: 100%;
+            height: 85px;
+            border: 4px solid #F1F5F9;
+            border-radius: 25px;
+            padding: 0 25px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        .f-check {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 25px;
+            background: #FFF;
+            border-radius: 25px;
+            border: 4px solid #F1F5F9;
+            cursor: pointer;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 15px 40px;
+            background: #FFF;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-base {
+            height: 85px;
+            border-radius: 25px;
+            border: none;
+            font-size: 1.4rem;
+            font-weight: 950;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            transition: 0.2s;
+        }
+
+        #ctaBtn {
+            background: #E5E7EB;
+            color: #AAA;
+        }
+
+        #ctaBtn.ready {
+            background: var(--primary);
+            color: #FFF;
+            box-shadow: 0 15px 35px rgba(0, 209, 121, 0.3);
+        }
+
+        .res-container {
+            background: #FFF;
+            border-radius: 40px;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.1);
+        }
+
+        .res-badge {
+            display: inline-block;
+            padding: 10px 22px;
+            background: rgba(0, 209, 121, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+            font-weight: 900;
+            margin-bottom: 30px;
+        }
+
+        .res-img {
+            width: 100%;
+            border-radius: 35px;
+            margin: 30px 0;
+            border: 8px solid #F1F5F9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="p-bar">
+        <div id="progressBar"></div>
+    </div>
+    <header>
+        <h1>HANGAON COMPANY</h1>
+    </header>
+    <div id="app">
+        <!-- STEP 1 -->
+        <div id="stepInfo" class="page active">
+            <h2>병원 경영,<br>입체 진단 리포트</h2>
+            <p class="desc">정밀한 분석을 위해 기초 정보를 입력해주세요.</p>
+            <input type="text" id="inName" class="f-input" placeholder="성함" oninput="uiUpdate()">
+            <input type="tel" id="inPhone" class="f-input" placeholder="연락처" oninput="uiUpdate()" inputmode="numeric">
+            <div class="f-check" id="agreeBox" onclick="toggleAgree()">
+                <i id="agreeIcon" class="fas fa-check-circle" style="color:#DDD; font-size:2.2rem;"></i>
+                <span style="font-weight:950; font-size:1.1rem;">개인정보 수집 이용 동의 (필수)</span>
+                <input type="checkbox" id="agree1" style="display:none">
+            </div>
+        </div>
+        <!-- STEP 2 -->
+        <div id="stepBranch" class="page">
+            <h2>진단 부문을<br>선택해 주세요.</h2>
+            <div class="card-list">
+                <div class="card" onclick="startSurvey('routeA')"><i class="fas fa-rocket"></i>
+                    <div class="card-txt">
+                        <h3>신규 개원 준비</h3>
+                    </div>
+                </div>
+                <div class="card" onclick="startSurvey('routeB')"><i class="fas fa-chart-line"></i>
+                    <div class="card-txt">
+                        <h3>이미 운영 중</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- STEP 3 -->
+        <div id="stepQuestion" class="page">
+            <div id="qLabel"
+                style="background:var(--primary); color:#FFF; padding:5px 15px; border-radius:10px; display:inline-block; font-weight:900; margin-bottom:15px;">
+                진단 중</div>
+            <h2 id="txtQ">질문 내용</h2>
+            <div id="optArea" class="card-list"></div>
+        </div>
+        <!-- STEP 4 -->
+        <div id="stepResult" class="page">
+            <div id="resBox" class="res-container">준비 중...</div>
+        </div>
+
+        <div class="footer">
+            <button id="ctaBtn" class="btn-base" onclick="handleNext()">진단 시작하기</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const state = {
+            page: 'stepInfo', route: null, step: 0, user: { name: '', phone: '' }, data: {},
+            qA: [{ a: '규모', q: '지향규모는?', opts: ['실속형', '조직형'], key: 'A1' }, { a: '전략', q: '브랜딩강조?', opts: ['개인위주', '네트워크'], key: 'A2' }],
+            qB: [{ a: '지표', q: '마케팅 데이터 분석 중?', key: 'B1' }, { a: '인사', q: '매뉴얼 보유?', key: 'B2' }]
+        };
+        const cbt = document.getElementById('ctaBtn');
+        function toggleAgree() { const c = document.getElementById('agree1'); c.checked = !c.checked; document.getElementById('agreeIcon').style.color = c.checked ? "#00D179" : "#DDD"; uiUpdate(); }
+        function uiUpdate() {
+            const r = (state.page === 'stepInfo') ? (document.getElementById('inName').value.length >= 2 && document.getElementById('agree1').checked) : true;
+            if (r) cbt.classList.add('ready'); else cbt.classList.remove('ready');
+            document.getElementById('progressBar').style.width = (state.page === 'stepResult' ? 100 : 20) + '%';
+        }
+        function startSurvey(r) { state.route = r; handleNext(); }
+        function handleNext() {
+            if (!cbt.classList.contains('ready')) return;
+            if (state.page === 'stepInfo') { state.user.name = document.getElementById('inName').value; state.user.phone = document.getElementById('inPhone').value; state.page = 'stepBranch'; render(); }
+            else if (state.page === 'stepBranch') { state.page = 'stepQuestion'; render(); }
+            else if (state.page === 'stepQuestion') {
+                const list = state.route === 'routeA' ? state.qA : state.qB;
+                if (state.step < list.length - 1) { state.step++; render(); }
+                else { state.page = 'stepResult'; saveAndRender(); }
+            }
+        }
+        function render() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(state.page).classList.add('active');
+            if (state.page === 'stepQuestion') {
+                const cq = (state.route === 'routeA' ? state.qA : state.qB)[state.step];
+                document.getElementById('txtQ').innerText = cq.q;
+                const oA = document.getElementById('optArea'); oA.innerHTML = '';
+                if (state.route === 'routeA') {
+                    cq.opts.forEach((o, i) => {
+                        const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<div class="card-txt"><h3>${o}</h3></div>`;
+                        d.onclick = () => { state.data[cq.key] = i; handleNext(); }; oA.appendChild(d);
+                    });
+                } else {
+                    [5, 3, 1].forEach(v => {
+                        const d = document.createElement('div'); d.className = 'card'; d.innerHTML = `<i class="fas fa-check"></i><div class="card-txt"><h3>${v === 5 ? '우수' : (v === 3 ? '보통' : '미흡')}</h3></div>`;
+                        d.onclick = () => { state.data[cq.key] = v; handleNext(); }; oA.appendChild(d);
+                    });
+                }
+            }
+            uiUpdate(); window.scrollTo(0, 0);
+        }
+        async function saveAndRender() {
+            renderResult();
+            const payload = { data: [{ time: new Date().toLocaleString(), name: state.user.name, phone: state.user.phone, route: state.route, answers: JSON.stringify(state.data) }] };
+            fetch('https://sheetdb.io/api/v1/3reeb3ra3fklt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+                .then(r => r.json()).then(d => alert('성공: 구글 시트 저장완료')).catch(e => alert('DB 네트워크 오류'));
+        }
+        function renderResult() {
+            const box = document.getElementById('resBox');
+            let html = `<span class="res-badge">종합 진단 완료</span><h2>${state.user.name} 원장님 진단 결과</h2>`;
+            if (state.route === 'routeA') html += `<img src="hospital_persona_medical_center_1773995174948.png" class="res-img"><p class="desc">조직 기반 매디컬 센터 전략을 추천합니다.</p>`;
+            else html += `<canvas id="radarChart"></canvas><p class="desc">지표 분석 결과 리포트입니다.</p>`;
+            box.innerHTML = html;
+            if (state.route === 'routeB') setTimeout(() => {
+                new Chart(document.getElementById('radarChart'), { type: 'radar', data: { labels: ['마케팅', '조직'], datasets: [{ data: [state.data.B1 || 3, state.data.B2 || 3], backgroundColor: 'rgba(0,209,121,0.2)', borderColor: '#00D179' }] } });
+            }, 100);
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('stepResult').classList.add('active');
+        }
+        uiUpdate();
+    </script>
+</body>
+
+</html>
